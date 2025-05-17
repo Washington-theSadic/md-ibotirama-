@@ -16,11 +16,11 @@ export const Hero = () => {
       id="hero" 
       className="relative min-h-[90vh] flex items-center justify-center px-4 py-16 md:py-24 bg-cover bg-center"
       style={{
-        backgroundImage: "url('https://images.unsplash.com/photo-1500673922987-e212871fec22?auto=format&fit=crop&q=80')",
+        backgroundImage: "url('https://images.unsplash.com/photo-1618160702438-9b02ab6515c9?auto=format&fit=crop&q=80')",
         backgroundPosition: "center center",
       }}
     >
-      <div className="absolute inset-0 bg-[#5F2C82] bg-opacity-70"></div>
+      <div className="absolute inset-0 bg-[#A21C1C] bg-opacity-90"></div>
       
       <div className="container mx-auto relative z-10 text-center">
         <h1 className="text-3xl md:text-5xl font-bold text-white mb-6 transform translate-y-0 opacity-100 transition-all duration-700 delay-300">
@@ -32,13 +32,13 @@ export const Hero = () => {
         </p>
         
         <div className="flex flex-col md:flex-row items-center justify-center gap-4 mb-12 transform translate-y-0 opacity-100 transition-all duration-700 delay-700">
-          <Button asChild size="lg" className="w-full md:w-auto bg-[#C8102E] hover:bg-[#a70d25] text-white">
+          <Button asChild size="lg" className="w-full md:w-auto bg-[#A21C1C] hover:bg-[#911616] text-white border-2 border-white">
             <a href="#cta">Quero ser parceiro</a>
           </Button>
           
-          <Button asChild variant="outline" size="lg" className="w-full md:w-auto bg-white/10 backdrop-blur-sm border-white text-white hover:bg-white/20">
-            <a href="https://www.youtube.com/watch?v=mrQK78o7hUk" target="_blank" rel="noopener noreferrer">
-              <Youtube className="mr-2" /> Assista o vídeo
+          <Button asChild variant="outline" size="lg" className="w-full md:w-auto bg-white/10 backdrop-blur-sm border-2 border-white text-white hover:bg-white/20">
+            <a href="https://www.youtube.com/watch?v=DDDqWTgDNsI" target="_blank" rel="noopener noreferrer">
+              <Youtube className="mr-2 text-[#F59F00]" /> Assista o vídeo
             </a>
           </Button>
         </div>

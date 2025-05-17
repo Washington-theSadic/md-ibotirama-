@@ -9,29 +9,23 @@ export const Testimonials = () => {
   
   const testimonials = [
     {
-      quote: "No dia que aceitei integrar meu estabelecimento ao Mais Delivery, vi resultados imediatos. Agora estamos oferecendo nossos produtos para um público muito maior, sem precisar de investimento.",
-      author: "José Pereira",
-      business: "JP Lanches",
-      location: "Ibotirama/BA"
-    },
-    {
-      quote: "Nossa entrada no Mais Delivery foi um divisor de águas para nosso negócio. A simplicidade da plataforma e o suporte humanizado realmente fazem a diferença. Recomendamos o serviço.",
-      author: "Eriques Fonseca",
-      business: "Lanchonete Pinguim",
-      location: "Barra/BA"
-    },
-    {
       quote: "A parceria com o Mais Delivery transformou nossa visibilidade no mercado. O aumento nas vendas foi notável já nos primeiros meses, e a taxa justa torna o serviço extremamente vantajoso.",
       author: "Maria Silva",
       business: "Cantinho do Sabor",
-      location: "Barreiras/BA"
+      location: "Barra/BA"
+    },
+    {
+      quote: "No dia que aceitei integrar meu estabelecimento ao Mais Delivery, vi resultados imediatos. Agora estamos oferecendo nossos produtos para um público muito maior, sem precisar de investimento.",
+      author: "Jairo Chagas",
+      business: "JC IMPORTS",
+      location: "Ibotirama/BA"
     }
   ];
 
   return (
     <section id="depoimentos" className="py-16 px-4 bg-gray-50">
       <div className="container mx-auto">
-        <h2 className="text-2xl md:text-3xl font-bold text-center mb-12 text-[#C8102E]">
+        <h2 className="text-2xl md:text-3xl font-bold text-center mb-12 text-[#A21C1C]">
           O que dizem nossos parceiros
         </h2>
         
@@ -53,7 +47,7 @@ export const Testimonials = () => {
                     style={{ transitionDelay: `${index * 150}ms` }}
                   >
                     <div className="flex items-start mb-4">
-                      <MessageCircle className="w-8 h-8 text-[#C8102E] mr-3 flex-shrink-0" />
+                      <MessageCircle className="w-8 h-8 text-[#A21C1C] mr-3 flex-shrink-0" />
                       <img 
                         src="/lovable-uploads/476b844f-a75b-468e-ba6a-1e7345b83181.png"
                         alt="Mais Delivery Logo" 
@@ -62,11 +56,11 @@ export const Testimonials = () => {
                     </div>
                     
                     <blockquote className="mb-6">
-                      <p className="text-gray-700 italic mb-4">"{testimonial.quote}"</p>
+                      <p className="text-[#1F2937] italic mb-4">"{testimonial.quote}"</p>
                       <footer className="text-sm">
-                        <span className="font-bold text-gray-800">{testimonial.author}, </span>
-                        <span className="text-gray-800">{testimonial.business} – </span>
-                        <span className="text-[#C8102E] font-medium">{testimonial.location}</span>
+                        <span className="font-bold text-[#1F2937]">{testimonial.author}, </span>
+                        <span className="text-[#1F2937]">{testimonial.business} – </span>
+                        <span className="text-[#A21C1C] font-medium">{testimonial.location}</span>
                       </footer>
                     </blockquote>
                   </div>

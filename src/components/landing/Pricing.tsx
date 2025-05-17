@@ -1,6 +1,7 @@
 
 import React from 'react';
 import { useInView } from '@/hooks/useInView';
+import { Check } from 'lucide-react';
 
 export const Pricing = () => {
   const { ref, inView } = useInView({ threshold: 0.1 });
@@ -9,19 +10,27 @@ export const Pricing = () => {
     {
       title: "Taxa Única de Adesão",
       price: "R$ 150,00",
-      color: "bg-gradient-to-br from-[#C8102E]/80 to-[#C8102E]"
+      benefits: [
+        "Flexibilidade total: pague somente pelos pedidos entregues",
+        "Sem contrato fixo: cancele quando quiser",
+        "Suporte prioritário 24h/7"
+      ]
     },
     {
       title: "Comissão por Pedido",
       price: "9,5%",
-      color: "bg-gradient-to-br from-[#5F2C82]/80 to-[#5F2C82]"
+      benefits: [
+        "Flexibilidade total: pague somente pelos pedidos entregues",
+        "Sem contrato fixo: cancele quando quiser",
+        "Suporte prioritário 24h/7"
+      ]
     }
   ];
 
   return (
     <section id="precos" className="py-16 px-4 bg-white">
       <div className="container mx-auto">
-        <h2 className="text-2xl md:text-3xl font-bold text-center mb-12 text-[#C8102E]">
+        <h2 className="text-2xl md:text-3xl font-bold text-center mb-12 text-[#A21C1C]">
           Preços Transparentes
         </h2>
         
@@ -37,25 +46,19 @@ export const Pricing = () => {
               }`}
               style={{ transitionDelay: `${index * 150}ms` }}
             >
-              <div className={`${option.color} py-6 px-8 text-white`}>
+              <div className={`bg-gradient-to-br from-[#A21C1C] to-[#F59F00] py-6 px-8 text-white`}>
                 <h3 className="text-xl font-bold mb-2">{option.title}</h3>
                 <p className="text-3xl font-bold">{option.price}</p>
               </div>
               
               <div className="bg-white p-6">
-                <ul className="space-y-2">
-                  <li className="flex items-center gap-2">
-                    <span className="w-4 h-4 bg-[#C8102E] rounded-full"></span>
-                    <span>Sem taxas escondidas</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <span className="w-4 h-4 bg-[#C8102E] rounded-full"></span>
-                    <span>Transparência completa</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <span className="w-4 h-4 bg-[#C8102E] rounded-full"></span>
-                    <span>Suporte técnico incluído</span>
-                  </li>
+                <ul className="space-y-4">
+                  {option.benefits.map((benefit, idx) => (
+                    <li key={idx} className="flex items-center gap-2">
+                      <Check className="w-5 h-5 text-[#F59F00] flex-shrink-0" />
+                      <span className="text-[#1F2937]">{benefit}</span>
+                    </li>
+                  ))}
                 </ul>
               </div>
             </div>

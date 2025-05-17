@@ -35,11 +35,11 @@ export const Header: React.FC<HeaderProps> = ({ isScrolled, visible }) => {
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center gap-6">
-            <a href="#beneficios" className="text-primary font-medium hover:text-opacity-80 transition-colors">Benefícios</a>
-            <a href="#como-funciona" className="text-primary font-medium hover:text-opacity-80 transition-colors">Como Funciona</a>
-            <a href="#depoimentos" className="text-primary font-medium hover:text-opacity-80 transition-colors">Depoimentos</a>
-            <a href="#precos" className="text-primary font-medium hover:text-opacity-80 transition-colors">Preços</a>
-            <Button asChild>
+            <a href="#beneficios" className="text-[#A21C1C] font-medium hover:text-opacity-80 transition-colors">Benefícios</a>
+            <a href="#como-funciona" className="text-[#A21C1C] font-medium hover:text-opacity-80 transition-colors">Como Funciona</a>
+            <a href="#depoimentos" className="text-[#A21C1C] font-medium hover:text-opacity-80 transition-colors">Depoimentos</a>
+            <a href="#precos" className="text-[#A21C1C] font-medium hover:text-opacity-80 transition-colors">Preços</a>
+            <Button asChild className="bg-[#A21C1C] hover:bg-[#911616]">
               <a href="#cta">Seja Parceiro</a>
             </Button>
           </nav>
@@ -51,7 +51,7 @@ export const Header: React.FC<HeaderProps> = ({ isScrolled, visible }) => {
             onClick={() => setMenuOpen(true)}
             size="icon"
           >
-            <Menu className="h-6 w-6 text-primary" />
+            <Menu className="h-6 w-6 text-[#A21C1C]" />
           </Button>
         </div>
       </header>
@@ -76,40 +76,40 @@ export const Header: React.FC<HeaderProps> = ({ isScrolled, visible }) => {
               className="h-8"
             />
             <Button variant="ghost" size="icon" onClick={closeMenu}>
-              <X className="h-6 w-6 text-primary" />
+              <X className="h-6 w-6 text-[#A21C1C]" />
             </Button>
           </div>
           
           <nav className="flex flex-col p-4">
             <a 
               href="#beneficios" 
-              className="py-3 text-primary font-medium border-b border-gray-100"
+              className="py-3 text-[#A21C1C] font-medium border-b border-gray-100"
               onClick={closeMenu}
             >
               Benefícios
             </a>
             <a 
               href="#como-funciona" 
-              className="py-3 text-primary font-medium border-b border-gray-100"
+              className="py-3 text-[#A21C1C] font-medium border-b border-gray-100"
               onClick={closeMenu}
             >
               Como Funciona
             </a>
             <a 
               href="#depoimentos" 
-              className="py-3 text-primary font-medium border-b border-gray-100"
+              className="py-3 text-[#A21C1C] font-medium border-b border-gray-100"
               onClick={closeMenu}
             >
               Depoimentos
             </a>
             <a 
               href="#precos" 
-              className="py-3 text-primary font-medium border-b border-gray-100"
+              className="py-3 text-[#A21C1C] font-medium border-b border-gray-100"
               onClick={closeMenu}
             >
               Preços
             </a>
-            <Button asChild className="mt-4">
+            <Button asChild className="mt-4 bg-[#A21C1C] hover:bg-[#911616]">
               <a href="#cta" onClick={closeMenu}>
                 Seja Parceiro
               </a>
