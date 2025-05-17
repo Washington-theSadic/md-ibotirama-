@@ -9,7 +9,7 @@ interface InViewOptions {
 
 export function useInView({ threshold = 0, rootMargin = '0px', once = false }: InViewOptions = {}) {
   const [inView, setInView] = useState(false);
-  const ref = useRef<HTMLElement>(null);
+  const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!ref.current) return;

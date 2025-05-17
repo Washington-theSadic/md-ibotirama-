@@ -1,7 +1,7 @@
 
 import React, { useEffect } from 'react';
 import { Button } from "@/components/ui/button";
-import { YouTube } from 'lucide-react';
+import { Youtube } from 'lucide-react';
 
 export const Hero = () => {
   useEffect(() => {
@@ -38,7 +38,7 @@ export const Hero = () => {
           
           <Button asChild variant="outline" size="lg" className="w-full md:w-auto bg-white/10 backdrop-blur-sm border-white text-white hover:bg-white/20">
             <a href="https://www.youtube.com/watch?v=mrQK78o7hUk" target="_blank" rel="noopener noreferrer">
-              <YouTube className="mr-2" /> Assista o vídeo
+              <Youtube className="mr-2" /> Assista o vídeo
             </a>
           </Button>
         </div>
