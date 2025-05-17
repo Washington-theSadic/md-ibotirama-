@@ -1,0 +1,83 @@
+
+import React, { useRef } from 'react';
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
+import { useInView } from '@/hooks/useInView';
+import { MessageCircle } from 'lucide-react';
+
+export const Testimonials = () => {
+  const { ref, inView } = useInView({ threshold: 0.1 });
+  
+  const testimonials = [
+    {
+      quote: "No dia que aceitei integrar meu estabelecimento ao Mais Delivery, vi resultados imediatos. Agora estamos oferecendo nossos produtos para um público muito maior, sem precisar de investimento.",
+      author: "José Pereira",
+      business: "JP Lanches",
+      location: "Ibotirama/BA"
+    },
+    {
+      quote: "Nossa entrada no Mais Delivery foi um divisor de águas para nosso negócio. A simplicidade da plataforma e o suporte humanizado realmente fazem a diferença. Recomendamos o serviço.",
+      author: "Eriques Fonseca",
+      business: "Lanchonete Pinguim",
+      location: "Barra/BA"
+    },
+    {
+      quote: "A parceria com o Mais Delivery transformou nossa visibilidade no mercado. O aumento nas vendas foi notável já nos primeiros meses, e a taxa justa torna o serviço extremamente vantajoso.",
+      author: "Maria Silva",
+      business: "Cantinho do Sabor",
+      location: "Barreiras/BA"
+    }
+  ];
+
+  return (
+    <section id="depoimentos" className="py-16 px-4 bg-gray-50">
+      <div className="container mx-auto">
+        <h2 className="text-2xl md:text-3xl font-bold text-center mb-12 text-[#C8102E]">
+          O que dizem nossos parceiros
+        </h2>
+        
+        <div ref={ref} className="relative">
+          <Carousel
+            opts={{
+              align: "start",
+              loop: true,
+            }}
+            className="w-full max-w-5xl mx-auto"
+          >
+            <CarouselContent>
+              {testimonials.map((testimonial, index) => (
+                <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/2 pl-4">
+                  <div 
+                    className={`bg-white rounded-xl shadow-md p-6 h-full transition-all duration-500 ${
+                      inView ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-10'
+                    }`}
+                    style={{ transitionDelay: `${index * 150}ms` }}
+                  >
+                    <div className="flex items-start mb-4">
+                      <MessageCircle className="w-8 h-8 text-[#C8102E] mr-3 flex-shrink-0" />
+                      <img 
+                        src="/lovable-uploads/476b844f-a75b-468e-ba6a-1e7345b83181.png"
+                        alt="Mais Delivery Logo" 
+                        className="h-6"
+                      />
+                    </div>
+                    
+                    <blockquote className="mb-6">
+                      <p className="text-gray-700 italic mb-4">"{testimonial.quote}"</p>
+                      <footer className="text-sm">
+                        <span className="font-bold text-gray-800">{testimonial.author}, </span>
+                        <span className="text-gray-800">{testimonial.business} – </span>
+                        <span className="text-[#C8102E] font-medium">{testimonial.location}</span>
+                      </footer>
+                    </blockquote>
+                  </div>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            <CarouselPrevious />
+            <CarouselNext />
+          </Carousel>
+        </div>
+      </div>
+    </section>
+  );
+};
