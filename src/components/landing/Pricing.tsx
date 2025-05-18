@@ -11,18 +11,18 @@ export const Pricing = () => {
       title: "Taxa Única de Adesão",
       price: "R$ 150,00",
       benefits: [
-        "Flexibilidade total: pague somente pelos pedidos entregues",
-        "Sem contrato fixo: cancele quando quiser",
-        "Suporte prioritário 24h/7"
+        "Presença no App Mais Delivery\nSeja encontrado por milhares de clientes em sua cidade.",
+        "Cadastro do cardápio e suporte na ativação\nNossa equipe ajuda em todo o processo inicial.",
+        "Treinamento e suporte local\nConte com consultores para te apoiar desde o início."
       ]
     },
     {
       title: "Comissão por Pedido",
       price: "9,5%",
       benefits: [
-        "Flexibilidade total: pague somente pelos pedidos entregues",
-        "Sem contrato fixo: cancele quando quiser",
-        "Suporte prioritário 24h/7"
+        "Sem mensalidade\nPague apenas pelos pedidos realizados.",
+        "Cancelamento sem multas\nLiberdade total para sair quando quiser.",
+        "Acesso a campanhas e promoções\nSua loja participa das ações de marketing locais e regionais."
       ]
     }
   ];
@@ -47,18 +47,29 @@ export const Pricing = () => {
               style={{ transitionDelay: `${index * 150}ms` }}
             >
               <div className={`bg-gradient-to-br from-[#A21C1C] to-[#F59F00] py-6 px-8 text-white`}>
-                <h3 className="text-xl font-bold mb-2">{option.title}</h3>
+                <div className="flex items-center gap-2 mb-2">
+                  <div className="h-4 w-4 bg-[#F59F00] rounded-full"></div>
+                  <h3 className="text-xl font-bold">{option.title}</h3>
+                </div>
                 <p className="text-3xl font-bold">{option.price}</p>
               </div>
               
               <div className="bg-white p-6">
-                <ul className="space-y-4">
-                  {option.benefits.map((benefit, idx) => (
-                    <li key={idx} className="flex items-center gap-2">
-                      <Check className="w-5 h-5 text-[#F59F00] flex-shrink-0" />
-                      <span className="text-[#1F2937]">{benefit}</span>
-                    </li>
-                  ))}
+                <ul className="space-y-6">
+                  {option.benefits.map((benefit, idx) => {
+                    const [title, description] = benefit.split('\n');
+                    return (
+                      <li key={idx} className="flex items-start gap-3">
+                        <div className="mt-1 flex-shrink-0">
+                          <div className="h-4 w-4 bg-[#F59F00] rounded-full opacity-60"></div>
+                        </div>
+                        <div>
+                          <p className="font-medium text-[#1F2937]">{title}</p>
+                          <p className="text-sm text-gray-600 mt-1">{description}</p>
+                        </div>
+                      </li>
+                    );
+                  })}
                 </ul>
               </div>
             </div>

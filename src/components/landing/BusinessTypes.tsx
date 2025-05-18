@@ -2,44 +2,44 @@
 import React from 'react';
 import { useInView } from '@/hooks/useInView';
 import { Store, ShoppingBag, Users } from 'lucide-react';
+import { Card, CardContent } from "@/components/ui/card";
 
 export const BusinessTypes = () => {
   const { ref, inView } = useInView({ threshold: 0.1 });
   
-  const businessTypes = [
-    {
-      icon: <Store className="w-12 h-12 text-[#C8102E]" />,
-      title: "Pet shops",
-      description: "Disponibilize produtos e serviços para pets com entrega rápida e prática para donos de animais."
-    },
-    {
-      icon: <ShoppingBag className="w-12 h-12 text-[#C8102E]" />,
-      title: "Lojas de conveniência",
-      description: "Ofereça produtos essenciais com a praticidade que seus clientes precisam a qualquer hora do dia."
-    },
-    {
-      icon: <Users className="w-12 h-12 text-[#C8102E]" />,
-      title: "Serviços gerais",
-      description: "Amplie seu alcance oferecendo serviços diversos através da nossa plataforma de delivery."
-    }
-  ];
-
   return (
     <section className="py-16 px-4 bg-white">
       <div className="container mx-auto">
-        <h2 className="text-2xl md:text-3xl font-bold text-center mb-3 text-[#C8102E]">
-          Para todos os estabelecimentos
+        <h2 className="text-2xl md:text-3xl font-bold text-center mb-3 text-[#A21C1C]">
+          Posso cadastrar minha loja mesmo não sendo restaurante?
         </h2>
         
         <p className="text-center text-gray-700 mb-12 max-w-3xl mx-auto">
-          O Mais Delivery não é apenas para restaurantes. Nossa plataforma atende diversos segmentos de negócio.
+          Claro! O Mais Delivery é pra todo mundo: restaurante, mercadinho, pet shop, conveniência e muito mais. 
+          Se você quer vender e crescer com a gente, é só chegar. Aqui, o importante é ter vontade de fazer acontecer!
         </p>
         
         <div 
           ref={ref}
           className="grid grid-cols-1 md:grid-cols-3 gap-8"
         >
-          {businessTypes.map((type, index) => (
+          {[
+            {
+              icon: <Store className="w-12 h-12 text-[#F59F00]" />,
+              title: "Pet shops",
+              description: "Disponibilize produtos e serviços para pets com entrega rápida e prática para donos de animais."
+            },
+            {
+              icon: <ShoppingBag className="w-12 h-12 text-[#F59F00]" />,
+              title: "Lojas de conveniência",
+              description: "Ofereça produtos essenciais com a praticidade que seus clientes precisam a qualquer hora do dia."
+            },
+            {
+              icon: <Users className="w-12 h-12 text-[#F59F00]" />,
+              title: "Serviços gerais",
+              description: "Amplie seu alcance oferecendo serviços diversos através da nossa plataforma de delivery."
+            }
+          ].map((type, index) => (
             <div 
               key={index}
               className={`bg-white rounded-xl shadow-md p-6 text-center transition-all duration-500 ${
@@ -57,7 +57,7 @@ export const BusinessTypes = () => {
                 {type.icon}
               </div>
               
-              <h3 className="text-xl font-bold text-gray-800 mb-3">
+              <h3 className="text-xl font-bold text-[#A21C1C] mb-3">
                 {type.title}
               </h3>
               

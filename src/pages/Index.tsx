@@ -7,6 +7,7 @@ import { HowItWorks } from '@/components/landing/HowItWorks';
 import { Testimonials } from '@/components/landing/Testimonials';
 import { Advantages } from '@/components/landing/Advantages';
 import { BusinessTypes } from '@/components/landing/BusinessTypes';
+import { DeliveryOptions } from '@/components/landing/DeliveryOptions';
 import { Pricing } from '@/components/landing/Pricing';
 import { CallToAction } from '@/components/landing/CallToAction';
 import { Footer } from '@/components/landing/Footer';
@@ -44,6 +45,7 @@ const Index = () => {
       <Benefits />
       <HowItWorks />
       <Testimonials />
+      <DeliveryOptions />
       <BusinessTypes />
       <Advantages />
       <Pricing />
