@@ -38,7 +38,7 @@ export const Testimonials = () => {
               }}>
                     <div className="flex items-start mb-4">
                       <MessageCircle className="w-8 h-8 text-[#A21C1C] mr-3 flex-shrink-0" />
-                      <img alt="Mais Delivery Logo" className="h-6" src="/lovable-uploads/f6027c3d-b455-45d1-bfba-d80296172c63.jpg" />
+                      
                     </div>
                     
                     <blockquote className="mb-6">
