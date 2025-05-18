@@ -19,7 +19,7 @@ export const Header: React.FC<HeaderProps> = ({
       <header className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ease-out ${isScrolled ? 'bg-white shadow-md' : 'bg-transparent'} ${visible ? 'translate-y-0' : '-translate-y-full'}`}>
         <div className="container mx-auto px-4 py-3 flex justify-between items-center">
           <a href="#hero" className="flex items-center">
-            <img src="/lovable-uploads/476b844f-a75b-468e-ba6a-1e7345b83181.png" alt="Mais Delivery Logo" className="h-12 md:h-13" />
+            <img src="/lovable-uploads/476b844f-a75b-468e-ba6a-1e7345b83181.png" alt="Mais Delivery Logo" className="h-12 md:h-12" />
           </a>
 
           {/* Desktop Navigation */}
