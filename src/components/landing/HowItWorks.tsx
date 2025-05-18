@@ -10,7 +10,7 @@ export const HowItWorks = () => {
     threshold: 0.1
   });
   const features = [{
-    icon: <Smartphone className="w-10 h-10 text-[#F59F00] mb-4" />,
+    icon: <Smartphone className="w-10 h-10 text-[#F59F00] mb-5" />,
     title: "Gestão Delivery",
     description: "Painel de controle intuitivo… gerencie pedidos, cardápio, taxas e relatórios.",
     expandedDescription: "Tenha total controle do seu negócio com um dashboard completo e fácil de usar. Gerencie todos os aspectos do seu delivery em um só lugar."
