@@ -15,7 +15,7 @@ export const HowItWorks = () => {
   const features = [{
     icon: <MessageSquare className="w-10 h-10 text-[#F59F00]" />,
     title: "Gestão Delivery",
-    description: "Painel de controle intuitivo… gerencie pedidos, cardápio, taxas e relatórios.",
+    description: "Painel de controle, pedidos, cardápio e desempenho em um clique.",
     expandedDescription: "Tenha total controle do seu negócio com um dashboard completo e fácil de usar. Gerencie todos os aspectos do seu delivery em um só lugar."
   }, {
     icon: <TrendingUp className="w-10 h-10 text-[#F59F00]" />,
