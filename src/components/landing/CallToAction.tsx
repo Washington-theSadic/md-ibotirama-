@@ -1,7 +1,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { Button } from "@/components/ui/button";
-import { WhatsApp } from 'lucide-react';
+import { MessageSquare } from 'lucide-react';
 
 export const CallToAction = () => {
   const [isPulsing, setIsPulsing] = useState(false);
@@ -41,7 +41,7 @@ export const CallToAction = () => {
             target="_blank" 
             rel="noopener noreferrer"
           >
-            <WhatsApp className="mr-2" />
+            <MessageSquare className="mr-2" />
             WhatsApp: (62) 99699‑8635
           </a>
         </Button>
@@ -58,7 +58,7 @@ export const CallToAction = () => {
               rel="noopener noreferrer"
               aria-label="Contato via WhatsApp"
             >
-              <WhatsApp className="h-6 w-6" />
+              <MessageSquare className="h-6 w-6" />
             </a>
           </Button>
         </div>
