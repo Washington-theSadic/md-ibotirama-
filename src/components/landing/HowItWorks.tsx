@@ -2,7 +2,7 @@
 import React from 'react';
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card';
 import { useInView } from '@/hooks/useInView';
-import { Smartphone, TrendingUp, Megaphone } from 'lucide-react';
+import { MessageSquare, TrendingUp, Megaphone } from 'lucide-react';
 
 export const HowItWorks = () => {
   const {
@@ -13,7 +13,7 @@ export const HowItWorks = () => {
   });
   
   const features = [{
-    icon: <Smartphone className="w-10 h-10 text-[#F59F00]" />,
+    icon: <MessageSquare className="w-10 h-10 text-[#F59F00]" />,
     title: "Gestão Delivery",
     description: "Painel de controle intuitivo… gerencie pedidos, cardápio, taxas e relatórios.",
     expandedDescription: "Tenha total controle do seu negócio com um dashboard completo e fácil de usar. Gerencie todos os aspectos do seu delivery em um só lugar."
@@ -41,11 +41,11 @@ export const HowItWorks = () => {
                 <div className={`bg-white rounded-2xl shadow-md p-6 flex flex-col items-center text-center h-full transition-all duration-500 cursor-pointer hover:shadow-xl hover:scale-[1.02] ${inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`} style={{
               transitionDelay: `${index * 100}ms`
             }}>
-                  <div className="w-16 h-16 rounded-full bg-[#A21C1C]/10 flex items-center justify-center">
+                  <div className="w-16 h-16 rounded-full bg-[#A21C1C]/10 flex items-center justify-center mb-4">
                     {feature.icon}
                   </div>
                   
-                  <h3 className="text-xl font-bold text-[#A21C1C] mt-4 mb-3">
+                  <h3 className="text-xl font-bold text-[#A21C1C] mb-3">
                     {feature.title}
                   </h3>
                   
