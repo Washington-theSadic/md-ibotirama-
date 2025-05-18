@@ -55,7 +55,7 @@ export const Hero = () => {
         <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 max-w-4xl mx-auto">
           {[
             '+ 300 cidades em todo o Brasil', 
-            'Clientes potenciais', 
+            '+ Clientes potenciais', 
             '+ Eficiência no atendimento e gestão', 
             '+ Vendas com novo canal de pedidos'
           ].map((item, index) => (

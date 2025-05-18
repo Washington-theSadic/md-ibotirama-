@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { useInView } from '@/hooks/useInView';
 import { Badge } from "@/components/ui/badge";
@@ -9,7 +10,7 @@ export const Advantages = () => {
   } = useInView({
     threshold: 0.1
   });
-  const advantages = ["Catálogo do estabelecimento dentro da plataforma", "Equipe de Monitoramento (07:30–23:30)", "Suporte Técnico Online", "Equipe de Marketing", "Treinamento passo a passo", "Equipe de Entregadores", "Consultor de Suporte Local", "Campanhas, Cupons, Promoções e Parcerias", "Flexibilidade na Entrega (própria ou Mais Delivery)"];
+  const advantages = ["Catálogo do estabelecimento dentro da plataforma", "Equipe de Monitoramento (07:30–00:00)", "Suporte Técnico Online", "Equipe de Marketing", "Treinamento passo a passo", "Equipe de Entregadores", "Consultor de Suporte Local", "Campanhas, Cupons, Promoções e Parcerias", "Flexibilidade na Entrega (própria ou Mais Delivery)"];
   return <section id="vantagens" className="py-16 px-4 bg-gray-50">
       <div className="container mx-auto">
         <h2 className="text-2xl md:text-3xl font-bold text-center mb-3 text-[#A21C1C]">Vender mais é só o começo. Veja o que mais você ganha</h2>

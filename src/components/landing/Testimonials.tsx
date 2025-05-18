@@ -2,7 +2,6 @@
 import React, { useRef } from 'react';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { useInView } from '@/hooks/useInView';
-import { MessageCircle } from 'lucide-react';
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 
 export const Testimonials = () => {
@@ -53,15 +52,13 @@ export const Testimonials = () => {
                   <div className={`bg-white rounded-xl shadow-md p-6 h-full transition-all duration-500 ${inView ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-10'}`} style={{
                 transitionDelay: `${index * 150}ms`
               }}>
-                    <div className="flex items-start mb-4">
-                      <MessageCircle className="w-8 h-8 text-[#A21C1C] mr-3 flex-shrink-0" />
-                    </div>
-                    
-                    <div className="mb-4">
-                      <Avatar className="h-16 w-16 mb-3">
-                        <AvatarImage src={testimonial.logoUrl} alt={`${testimonial.business} Logo`} />
-                        <AvatarFallback>{testimonial.business[0]}</AvatarFallback>
-                      </Avatar>
+                    <div className="flex justify-center mb-4">
+                      <div className="bg-[#A21C1C] rounded-full p-2 flex items-center justify-center">
+                        <Avatar className="h-12 w-12">
+                          <AvatarImage src={testimonial.logoUrl} alt={`${testimonial.business} Logo`} className="object-contain" />
+                          <AvatarFallback>{testimonial.business[0]}</AvatarFallback>
+                        </Avatar>
+                      </div>
                     </div>
                     
                     <blockquote className="mb-6">

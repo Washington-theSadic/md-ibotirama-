@@ -47,10 +47,7 @@ export const Pricing = () => {
               style={{ transitionDelay: `${index * 150}ms` }}
             >
               <div className={`bg-gradient-to-br from-[#A21C1C] to-[#F59F00] py-6 px-8 text-white`}>
-                <div className="flex items-center gap-2 mb-2">
-                  <div className="h-4 w-4 bg-[#F59F00] rounded-full"></div>
-                  <h3 className="text-xl font-bold">{option.title}</h3>
-                </div>
+                <h3 className="text-xl font-bold">{option.title}</h3>
                 <p className="text-3xl font-bold">{option.price}</p>
               </div>
               

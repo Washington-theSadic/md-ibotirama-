@@ -26,8 +26,8 @@ export const BusinessTypes = () => {
           {[
             {
               icon: <Store className="w-12 h-12 text-[#F59F00]" />,
-              title: "Pet shops",
-              description: "Disponibilize produtos e serviços para pets com entrega rápida e prática para donos de animais."
+              title: "Farmácias",
+              description: "Ofereça medicamentos e produtos de saúde com entrega rápida para clientes que precisam de pronta disponibilidade."
             },
             {
               icon: <ShoppingBag className="w-12 h-12 text-[#F59F00]" />,

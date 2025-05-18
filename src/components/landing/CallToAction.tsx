@@ -37,12 +37,13 @@ export const CallToAction = () => {
           className={`text-lg bg-[#A21C1C] hover:bg-[#911616] ${isPulsing ? 'animate-pulse' : ''}`}
         >
           <a 
-            href="https://wa.me/5562996998635" 
+            href="https://wa.me/5577991301796" 
             target="_blank" 
             rel="noopener noreferrer"
+            className="flex items-center justify-center"
           >
             <MessageSquare className="mr-2" />
-            WhatsApp: (62) 99699‑8635
+            WhatsApp: (77) 99130-1796
           </a>
         </Button>
 
@@ -50,13 +51,14 @@ export const CallToAction = () => {
           <Button
             asChild
             size="icon"
-            className="h-14 w-14 rounded-full bg-[#A21C1C] hover:bg-[#911616] shadow-lg"
+            className="h-14 w-14 rounded-full bg-[#A21C1C] hover:bg-[#911616] shadow-lg flex items-center justify-center"
           >
             <a 
-              href="https://wa.me/5562996998635" 
+              href="https://wa.me/5577991301796" 
               target="_blank" 
               rel="noopener noreferrer"
               aria-label="Contato via WhatsApp"
+              className="flex items-center justify-center"
             >
               <MessageSquare className="h-6 w-6" />
             </a>
