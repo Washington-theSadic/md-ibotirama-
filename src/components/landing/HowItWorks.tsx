@@ -60,7 +60,7 @@ export const HowItWorks = () => {
         </div>
         
         <div className="mt-12 flex justify-center">
-          <img alt="Ilustração de restaurante" src="https://i.imgur.com/l7zw4p9.jpeg" className="rounded-xl shadow-lg max-w-full md:max-w-lg lg:max-w-2xl h-auto object-fill" />
+          
         </div>
       </div>
     </section>;
