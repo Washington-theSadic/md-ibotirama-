@@ -2,7 +2,7 @@
 import React from 'react';
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card';
 import { useInView } from '@/hooks/useInView';
-import { MessageSquare, TrendingUp, Megaphone } from 'lucide-react';
+import { MessageSquare, TrendingUp, TimerIcon } from 'lucide-react';
 
 export const HowItWorks = () => {
   const {
@@ -23,10 +23,10 @@ export const HowItWorks = () => {
     description: "Acrescente um novo canal de vendas, onde milhares de novos clientes encontrarão você.",
     expandedDescription: "Aumente sua visibilidade na plataforma e alcance mais clientes. Nossa base de usuários está sempre crescendo e procurando por novos estabelecimentos."
   }, {
-    icon: <Megaphone className="w-10 h-10 text-[#F59F00]" />,
-    title: "Publicidade",
-    description: "Acesso a campanhas e promoções dentro da plataforma.",
-    expandedDescription: "Destaque seu estabelecimento com campanhas promocionais exclusivas e ganhe visibilidade premium na nossa plataforma."
+    icon: <TimerIcon className="w-10 h-10 text-[#F59F00]" />,
+    title: "Eficiência no Atendimento",
+    description: "Pedidos feitos de forma rápida e automatizada, eliminando ligações demoradas.",
+    expandedDescription: "Você recebe tudo pronto para produzir e entregar. Agilize seu processo e aumente a satisfação dos clientes com nosso sistema automatizado."
   }];
   
   return <section id="como-funciona" className="py-16 px-4 bg-white">

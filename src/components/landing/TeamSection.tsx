@@ -1,25 +1,38 @@
 
 import React from 'react';
 import { useInView } from '@/hooks/useInView';
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 
 export const TeamSection = () => {
   const { ref, inView } = useInView({ threshold: 0.1 });
+  
+  const teamImages = [
+    "https://i.imgur.com/eKGLi9U.jpeg",
+    "https://i.imgur.com/oILzGmK.jpeg"
+  ];
   
   return (
     <section className="py-16 px-4 bg-white">
       <div className="container mx-auto">
         <div ref={ref} className={`grid grid-cols-1 md:grid-cols-2 gap-8 items-center transition-all duration-500 ${inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-          <div className="grid grid-cols-2 gap-4">
-            <img 
-              src="https://i.imgur.com/eKGLi9U.jpeg" 
-              alt="Equipe Mais Delivery" 
-              className="rounded-lg shadow-md h-full object-cover"
-            />
-            <img 
-              src="https://i.imgur.com/oILzGmK.jpeg" 
-              alt="Equipe Mais Delivery" 
-              className="rounded-lg shadow-md h-full object-cover"
-            />
+          <div className="relative">
+            <Carousel opts={{ align: "start", loop: true }} className="w-full">
+              <CarouselContent>
+                {teamImages.map((image, index) => (
+                  <CarouselItem key={index} className="basis-full">
+                    <img 
+                      src={image} 
+                      alt={`Equipe Mais Delivery ${index + 1}`} 
+                      className="rounded-lg shadow-md h-64 md:h-80 w-full object-cover"
+                    />
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+              <div className="absolute -bottom-10 w-full flex justify-center gap-2">
+                <CarouselPrevious className="relative static mx-1 transform-none" />
+                <CarouselNext className="relative static mx-1 transform-none" />
+              </div>
+            </Carousel>
           </div>
           
           <div>

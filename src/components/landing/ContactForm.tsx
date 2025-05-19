@@ -42,13 +42,31 @@ export const ContactForm = () => {
   });
 
   function onSubmit(data: FormValues) {
+    // Construct WhatsApp message
+    const whatsappNumber = "5577991169688"; // Replace with your actual WhatsApp number
+    const message = encodeURIComponent(
+      `*Nova solicitação de parceria*\n\n` +
+      `*Nome:* ${data.name}\n` +
+      `*Estabelecimento:* ${data.business}\n` +
+      `*Telefone:* ${data.phone}\n` +
+      `*Segmento:* ${data.segment}\n` +
+      `*Mensagem:* ${data.message || "Não informada"}`
+    );
+    
+    // Create WhatsApp URL
+    const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${message}`;
+    
+    // Show success toast
     toast({
-      title: "Formulário enviado com sucesso!",
-      description: "Em breve entraremos em contato.",
+      title: "Formulário preenchido com sucesso!",
+      description: "Você será redirecionado para o WhatsApp.",
     });
     
-    console.log(data);
-    form.reset();
+    // Redirect to WhatsApp after a short delay
+    setTimeout(() => {
+      window.open(whatsappUrl, "_blank");
+      form.reset();
+    }, 1000);
   }
 
   const segments = [

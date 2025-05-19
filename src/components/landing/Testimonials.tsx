@@ -36,7 +36,8 @@ export const Testimonials = () => {
     }
   ];
   
-  return <section id="depoimentos" className="py-16 px-4 bg-gray-50">
+  return (
+    <section id="depoimentos" className="py-16 px-4 bg-gray-50">
       <div className="container mx-auto">
         <h2 className="text-2xl md:text-3xl font-bold text-center mb-12 text-[#A21C1C]">
           O que dizem nossos parceiros
@@ -44,14 +45,15 @@ export const Testimonials = () => {
         
         <div ref={ref} className="relative">
           <Carousel opts={{
-          align: "start",
-          loop: true
-        }} className="w-full max-w-5xl mx-auto">
+            align: "start",
+            loop: true
+          }} className="w-full max-w-5xl mx-auto">
             <CarouselContent>
-              {testimonials.map((testimonial, index) => <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/2 pl-4">
+              {testimonials.map((testimonial, index) => (
+                <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/2 pl-4">
                   <div className={`bg-white rounded-xl shadow-md p-6 h-full transition-all duration-500 ${inView ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-10'}`} style={{
-                transitionDelay: `${index * 150}ms`
-              }}>
+                    transitionDelay: `${index * 150}ms`
+                  }}>
                     <div className="flex justify-center mb-4">
                       <div className="bg-[#A21C1C] rounded-full p-2 flex items-center justify-center">
                         <Avatar className="h-12 w-12">
@@ -70,12 +72,16 @@ export const Testimonials = () => {
                       </footer>
                     </blockquote>
                   </div>
-                </CarouselItem>)}
+                </CarouselItem>
+              ))}
             </CarouselContent>
-            <CarouselPrevious />
-            <CarouselNext />
+            <div className="mt-6 flex justify-center gap-4">
+              <CarouselPrevious className="relative static transform-none" />
+              <CarouselNext className="relative static transform-none" />
+            </div>
           </Carousel>
         </div>
       </div>
-    </section>;
+    </section>
+  );
 };

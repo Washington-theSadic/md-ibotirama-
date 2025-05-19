@@ -1,21 +1,27 @@
+
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
 import { useMedia } from '@/hooks/useMedia';
+
 interface HeaderProps {
   isScrolled: boolean;
   visible: boolean;
 }
+
 export const Header: React.FC<HeaderProps> = ({
   isScrolled,
   visible
 }) => {
   const [menuOpen, setMenuOpen] = useState(false);
   const isMobile = useMedia('(max-width: 768px)');
+  
   const closeMenu = () => {
     setMenuOpen(false);
   };
-  return <>
+
+  return (
+    <>
       <header className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ease-out ${isScrolled ? 'bg-white shadow-md' : 'bg-transparent'} ${visible ? 'translate-y-0' : '-translate-y-full'}`}>
         <div className="container mx-auto px-4 py-3 flex justify-between items-center">
           <a href="#hero" className="flex items-center">
@@ -27,7 +33,6 @@ export const Header: React.FC<HeaderProps> = ({
             <a href="#beneficios" className="text-[#A21C1C] font-medium hover:text-opacity-80 transition-colors">Benefícios</a>
             <a href="#como-funciona" className="text-[#A21C1C] font-medium hover:text-opacity-80 transition-colors">Como Funciona</a>
             <a href="#depoimentos" className="text-[#A21C1C] font-medium hover:text-opacity-80 transition-colors">Depoimentos</a>
-            <a href="#precos" className="text-[#A21C1C] font-medium hover:text-opacity-80 transition-colors">Preços</a>
             <Button asChild className="bg-[#A21C1C] hover:bg-[#911616]">
               <a href="#cta">Seja Parceiro</a>
             </Button>
@@ -60,9 +65,6 @@ export const Header: React.FC<HeaderProps> = ({
             <a href="#depoimentos" className="py-3 text-[#A21C1C] font-medium border-b border-gray-100" onClick={closeMenu}>
               Depoimentos
             </a>
-            <a href="#precos" className="py-3 text-[#A21C1C] font-medium border-b border-gray-100" onClick={closeMenu}>
-              Preços
-            </a>
             <Button asChild className="mt-4 bg-[#A21C1C] hover:bg-[#911616]">
               <a href="#cta" onClick={closeMenu}>
                 Seja Parceiro
@@ -71,5 +73,6 @@ export const Header: React.FC<HeaderProps> = ({
           </nav>
         </div>
       </div>
-    </>;
+    </>
+  );
 };
