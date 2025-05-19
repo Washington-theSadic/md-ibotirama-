@@ -35,12 +35,21 @@ const Index = () => {
       setLastScrollY(currentScrollY);
     };
 
+    // Add viewport meta tag for proper mobile rendering
+    const meta = document.createElement('meta');
+    meta.name = 'viewport';
+    meta.content = 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0';
+    document.head.appendChild(meta);
+
     window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      document.head.removeChild(meta);
+    };
   }, [lastScrollY]);
 
   return (
-    <div className="relative bg-white">
+    <div className="relative bg-white overflow-x-hidden">
       <Header isScrolled={isScrolled} visible={headerVisible} />
       <Hero />
       <Benefits />

@@ -43,7 +43,7 @@ export const ContactForm = () => {
 
   function onSubmit(data: FormValues) {
     // Construct WhatsApp message
-    const whatsappNumber = "5577991169688"; // Replace with your actual WhatsApp number
+    const whatsappNumber = "5577913017960"; // Updated with the correct number
     const message = encodeURIComponent(
       `*Nova solicitação de parceria*\n\n` +
       `*Nome:* ${data.name}\n` +
@@ -54,7 +54,7 @@ export const ContactForm = () => {
     );
     
     // Create WhatsApp URL
-    const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${message}`;
+    const whatsappUrl = `https://api.whatsapp.com/send?phone=${whatsappNumber}&text=${message}`;
     
     // Show success toast
     toast({
@@ -62,11 +62,11 @@ export const ContactForm = () => {
       description: "Você será redirecionado para o WhatsApp.",
     });
     
-    // Redirect to WhatsApp after a short delay
+    // Use window.location.href for better mobile support instead of window.open
     setTimeout(() => {
-      window.open(whatsappUrl, "_blank");
+      window.location.href = whatsappUrl;
       form.reset();
-    }, 1000);
+    }, 1500);
   }
 
   const segments = [

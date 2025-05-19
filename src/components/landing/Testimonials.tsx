@@ -1,8 +1,9 @@
 
-import React, { useRef } from 'react';
+import React from 'react';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { useInView } from '@/hooks/useInView';
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import { ArrowRight } from 'lucide-react';
 
 export const Testimonials = () => {
   const {
@@ -75,9 +76,15 @@ export const Testimonials = () => {
                 </CarouselItem>
               ))}
             </CarouselContent>
-            <div className="mt-6 flex justify-center gap-4">
-              <CarouselPrevious className="relative static transform-none" />
-              <CarouselNext className="relative static transform-none" />
+            <div className="flex justify-center w-full gap-4 mt-6">
+              <CarouselPrevious className="relative static transform-none mx-2" />
+              <CarouselNext className="relative static transform-none mx-2" />
+            </div>
+            <div className="flex justify-center w-full mt-4">
+              <div className="flex items-center gap-2 text-[#A21C1C] text-sm animate-pulse">
+                <span>Arraste para ver mais</span>
+                <ArrowRight className="w-4 h-4 animate-bounce" />
+              </div>
             </div>
           </Carousel>
         </div>

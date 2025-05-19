@@ -1,6 +1,9 @@
+
 import React from 'react';
 import { useInView } from '@/hooks/useInView';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
+import { ArrowRight } from 'lucide-react';
+
 export const MarketingCampaigns = () => {
   const {
     ref,
@@ -16,24 +19,36 @@ export const MarketingCampaigns = () => {
         </h2>
         
         <p className="text-center text-lg text-[#1F2937] mb-12 max-w-3xl mx-auto">
-          Realizamos campanhas de marketing cooperado, onde o estabelecimento e o Mais Delivery dividem os custos para maximizar o alcance e os resultados. Veja alguns exemplos reais:
+          Criamos campanhas de marketing em parceria com seu estabelecimento, compartilhando esforços para maximizar seu alcance e resultados. Confira alguns cases de sucesso!
         </p>
         
         <div ref={ref} className={`transition-all duration-500 ${inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-          <Carousel className="w-full max-w-4xl mx-auto" opts={{
-          align: "center",
-          loop: true
-        }}>
+          <Carousel className="w-full mx-auto" opts={{
+            align: "center",
+            loop: true
+          }}>
             <CarouselContent>
-              {campaigns.map((campaign, index) => <CarouselItem key={index} className="sm:basis-1/2 md:basis-1/3">
+              {campaigns.map((campaign, index) => (
+                <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/2 xl:basis-1/3">
                   <div className="overflow-hidden rounded-lg shadow-md p-1">
-                    <img src={campaign} alt={`Campanha de Marketing ${index + 1}`} className="w-auto h-auto max-w-full max-h-[500px] hover:scale-105 transition-transform duration-300 object-contain\n" />
+                    <img 
+                      src={campaign} 
+                      alt={`Campanha de Marketing ${index + 1}`} 
+                      className="w-full h-auto object-contain max-h-[500px] hover:scale-105 transition-transform duration-300" 
+                    />
                   </div>
-                </CarouselItem>)}
+                </CarouselItem>
+              ))}
             </CarouselContent>
-            <div className="mt-6 flex justify-center gap-4">
-              <CarouselPrevious className="relative static transform-none mx-[40px]" />
-              <CarouselNext className="w-auto h-auto max-w-full max-h-[500px] hover:scale-105 transition-transform duration-300 object-contain\n" />
+            <div className="flex justify-center w-full gap-4 mt-6">
+              <CarouselPrevious className="relative static transform-none mx-2" />
+              <CarouselNext className="relative static transform-none mx-2" />
+            </div>
+            <div className="flex justify-center w-full mt-4">
+              <div className="flex items-center gap-2 text-[#A21C1C] text-sm animate-pulse">
+                <span>Arraste para ver mais</span>
+                <ArrowRight className="w-4 h-4 animate-bounce" />
+              </div>
             </div>
           </Carousel>
         </div>
