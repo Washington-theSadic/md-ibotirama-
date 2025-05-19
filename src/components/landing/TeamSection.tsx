@@ -19,7 +19,7 @@ export const TeamSection = () => {
           }} className="w-full">
               <CarouselContent>
                 {teamImages.map((image, index) => <CarouselItem key={index} className="basis-full">
-                    <img src={image} alt={`Equipe Mais Delivery ${index + 1}`} className="rounded-lg shadow-md h-70 md:h-9 w-full object-cover" />
+                    <img src={image} alt={`Equipe Mais Delivery ${index + 1}`} className="rounded-lg shadow-md h-70 md:h-80 w-full object-cover" />
                   </CarouselItem>)}
               </CarouselContent>
               <div className="absolute -bottom-10 w-full flex justify-center gap-2">
