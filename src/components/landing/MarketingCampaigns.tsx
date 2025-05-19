@@ -33,7 +33,7 @@ export const MarketingCampaigns = () => {
             </CarouselContent>
             <div className="mt-6 flex justify-center gap-4">
               <CarouselPrevious className="relative static transform-none" />
-              <CarouselNext className="relative static transform-none" />
+              <CarouselNext className="w-auto h-auto max-w-full max-h-[500px] hover:scale-105 transition-transform duration-300 object-contain\n" />
             </div>
           </Carousel>
         </div>
