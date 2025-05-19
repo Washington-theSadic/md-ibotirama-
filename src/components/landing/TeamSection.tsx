@@ -1,7 +1,9 @@
+
 import React from 'react';
 import { useInView } from '@/hooks/useInView';
 import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel";
 import { ArrowRight } from 'lucide-react';
+
 export const TeamSection = () => {
   const {
     ref,
@@ -10,18 +12,22 @@ export const TeamSection = () => {
     threshold: 0.1
   });
   const teamImages = ["https://i.imgur.com/eKGLi9U.jpeg", "https://i.imgur.com/oILzGmK.jpeg"];
-  return <section className="py-16 px-4 bg-white">
+  
+  return (
+    <section className="py-16 px-4 bg-white">
       <div className="container mx-auto">
         <div ref={ref} className={`grid grid-cols-1 md:grid-cols-2 gap-8 items-center transition-all duration-500 ${inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
           <div className="relative shadow-lg rounded-lg overflow-hidden">
             <Carousel opts={{
-            align: "start",
-            loop: true
-          }} className="w-full">
+              align: "start",
+              loop: true
+            }} className="w-full">
               <CarouselContent>
-                {teamImages.map((image, index) => <CarouselItem key={index} className="basis-full">
+                {teamImages.map((image, index) => (
+                  <CarouselItem key={index} className="basis-full">
                     <img src={image} alt={`Equipe Mais Delivery ${index + 1}`} className="rounded-lg shadow-md h-70 md:h-80 w-full object-cover hover:scale-105 transition-transform duration-300" />
-                  </CarouselItem>)}
+                  </CarouselItem>
+                ))}
               </CarouselContent>
               <div className="flex justify-center w-full mt-4">
                 <div className="flex flex-col items-center gap-1">
@@ -36,7 +42,7 @@ export const TeamSection = () => {
           </div>
           
           <div>
-            <h2 className="flex flex-col md:flex-row items-start gap-6\n">
+            <h2 className="text-2xl md:text-3xl font-bold mb-6 text-[#A21C1C]">
               Uma Equipe Dedicada ao Seu Sucesso
             </h2>
             
@@ -46,5 +52,6 @@ export const TeamSection = () => {
           </div>
         </div>
       </div>
-    </section>;
+    </section>
+  );
 };
