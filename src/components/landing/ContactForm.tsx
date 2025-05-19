@@ -42,20 +42,6 @@ export const ContactForm = () => {
   });
 
   function onSubmit(data: FormValues) {
-    // Construct WhatsApp message
-    const whatsappNumber = "5577913017960"; // Correct number: 77 9130-1796
-    const message = encodeURIComponent(
-      `*Nova solicitação de parceria*\n\n` +
-      `*Nome:* ${data.name}\n` +
-      `*Estabelecimento:* ${data.business}\n` +
-      `*Telefone:* ${data.phone}\n` +
-      `*Segmento:* ${data.segment}\n` +
-      `*Mensagem:* ${data.message || "Não informada"}`
-    );
-    
-    // Create WhatsApp URL
-    const whatsappUrl = `https://api.whatsapp.com/send?phone=${whatsappNumber}&text=${message}`;
-    
     // Show success toast
     toast({
       title: "Formulário preenchido com sucesso!",
@@ -64,6 +50,9 @@ export const ContactForm = () => {
     
     // Use timeout to ensure toast is visible before redirect
     setTimeout(() => {
+      // Direct WhatsApp link without parameters
+      const whatsappUrl = "https://wa.link/74r6oq";
+      
       // For mobile compatibility, try to use window.open first with _blank target
       // If that doesn't work (e.g., popup blockers), fall back to location.href
       const newWindow = window.open(whatsappUrl, '_blank');
@@ -181,6 +170,10 @@ export const ContactForm = () => {
           Enviar
         </Button>
       </form>
+      
+      <div className="text-xs text-center mt-4 text-gray-500">
+        © Mais Delivery Oeste da Bahia e Washington - Oesteframelab
+      </div>
     </Form>
   );
 };

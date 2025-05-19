@@ -22,7 +22,7 @@ export const MarketingCampaigns = () => {
         </h2>
         
         <p className="text-center text-lg text-[#1F2937] mb-12 max-w-3xl mx-auto">
-          Criamos campanhas de marketing em parceria com seu estabelecimento, compartilhando esforços para maximizar seu alcance e resultados. Confira alguns cases de sucesso!
+          Impulsione sua marca com ações estratégicas de marketing cooperado para conquistar mais clientes!
         </p>
         
         <div ref={ref} className={`transition-all duration-500 shadow-lg rounded-lg overflow-hidden ${inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
@@ -43,16 +43,17 @@ export const MarketingCampaigns = () => {
                 </CarouselItem>
               ))}
             </CarouselContent>
-            <div className="flex justify-center w-full mt-4">
-              <div className="flex flex-col items-center gap-1">
-                <div className="flex items-center gap-2 text-[#A21C1C] text-sm">
-                  <span>Arraste para ver mais</span>
-                  <ArrowRight className="w-4 h-4 animate-bounce" />
-                </div>
-                <div className="h-0.5 w-12 bg-gradient-to-r from-transparent via-[#A21C1C] to-transparent animate-pulse"></div>
-              </div>
-            </div>
           </Carousel>
+        </div>
+        
+        <div className="flex justify-center w-full mt-6">
+          <div className="flex flex-col items-center gap-1">
+            <div className="flex items-center gap-2 text-[#A21C1C] text-sm">
+              <span>Arraste para ver mais</span>
+              <ArrowRight className="w-4 h-4 animate-bounce animate-infinite" />
+            </div>
+            <div className="h-0.5 w-24 bg-gradient-to-r from-transparent via-[#A21C1C] to-transparent animate-pulse"></div>
+          </div>
         </div>
       </div>
     </section>

@@ -39,7 +39,7 @@ export const DeliveryOptions = () => {
             <img 
               src="https://i.imgur.com/l7zw4p9.jpeg" 
               alt="Entregador Mais Delivery" 
-              className={`w-full h-auto rounded-lg shadow-lg transition-all duration-500 ${inView ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-10'}`}
+              className={`w-full h-auto rounded-lg shadow-lg transition-all duration-800 ${inView ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-10'}`}
             />
           </div>
           
@@ -47,13 +47,13 @@ export const DeliveryOptions = () => {
             {deliveryOptions.map((option, index) => (
               <div 
                 key={index}
-                className={`bg-white rounded-xl shadow-md p-6 transition-all duration-500 ${
+                className={`bg-white rounded-xl shadow-md p-6 transition-all duration-800 ${
                   inView 
                     ? 'opacity-100 translate-x-0' 
                     : 'opacity-0 translate-x-10'
                 }`}
                 style={{ 
-                  transitionDelay: `${index * 150}ms`
+                  transitionDelay: `${index * 200}ms`
                 }}
               >
                 <div className="flex items-center mb-4">

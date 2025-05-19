@@ -76,16 +76,17 @@ export const Testimonials = () => {
                 </CarouselItem>
               ))}
             </CarouselContent>
-            <div className="flex justify-center w-full mt-6">
-              <div className="flex flex-col items-center gap-1">
-                <div className="flex items-center gap-2 text-[#A21C1C] text-sm">
-                  <span>Arraste para ver mais</span>
-                  <ArrowRight className="w-4 h-4 animate-bounce animate-infinite" />
-                </div>
-                <div className="h-0.5 w-24 bg-gradient-to-r from-transparent via-[#A21C1C] to-transparent animate-pulse"></div>
-              </div>
-            </div>
           </Carousel>
+          
+          <div className="flex justify-center w-full mt-6">
+            <div className="flex flex-col items-center gap-1">
+              <div className="flex items-center gap-2 text-[#A21C1C] text-sm">
+                <span>Arraste para ver mais</span>
+                <ArrowRight className="w-4 h-4 animate-bounce animate-infinite" />
+              </div>
+              <div className="h-0.5 w-24 bg-gradient-to-r from-transparent via-[#A21C1C] to-transparent animate-pulse"></div>
+            </div>
+          </div>
         </div>
       </div>
     </section>
