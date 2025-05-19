@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
+import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel";
 import { useInView } from '@/hooks/useInView';
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { ArrowRight } from 'lucide-react';
@@ -52,7 +52,7 @@ export const Testimonials = () => {
             <CarouselContent>
               {testimonials.map((testimonial, index) => (
                 <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/2 pl-4">
-                  <div className={`bg-white rounded-xl shadow-md p-6 h-full transition-all duration-500 ${inView ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-10'}`} style={{
+                  <div className={`bg-white rounded-xl shadow-md hover:shadow-lg transition-all duration-300 p-6 h-full transition-all duration-500 ${inView ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-10'}`} style={{
                     transitionDelay: `${index * 150}ms`
                   }}>
                     <div className="flex justify-center mb-4">
@@ -76,14 +76,13 @@ export const Testimonials = () => {
                 </CarouselItem>
               ))}
             </CarouselContent>
-            <div className="flex justify-center w-full gap-4 mt-6">
-              <CarouselPrevious className="relative static transform-none mx-2" />
-              <CarouselNext className="relative static transform-none mx-2" />
-            </div>
-            <div className="flex justify-center w-full mt-4">
-              <div className="flex items-center gap-2 text-[#A21C1C] text-sm animate-pulse">
-                <span>Arraste para ver mais</span>
-                <ArrowRight className="w-4 h-4 animate-bounce" />
+            <div className="flex justify-center w-full mt-6">
+              <div className="flex flex-col items-center gap-1">
+                <div className="flex items-center gap-2 text-[#A21C1C] text-sm">
+                  <span>Arraste para ver mais</span>
+                  <ArrowRight className="w-4 h-4 animate-bounce animate-infinite" />
+                </div>
+                <div className="h-0.5 w-24 bg-gradient-to-r from-transparent via-[#A21C1C] to-transparent animate-pulse"></div>
               </div>
             </div>
           </Carousel>

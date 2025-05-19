@@ -43,7 +43,7 @@ export const ContactForm = () => {
 
   function onSubmit(data: FormValues) {
     // Construct WhatsApp message
-    const whatsappNumber = "5577913017960"; // Updated with the correct number
+    const whatsappNumber = "5577913017960"; // Correct number: 77 9130-1796
     const message = encodeURIComponent(
       `*Nova solicitação de parceria*\n\n` +
       `*Nome:* ${data.name}\n` +
@@ -62,9 +62,17 @@ export const ContactForm = () => {
       description: "Você será redirecionado para o WhatsApp.",
     });
     
-    // Use window.location.href for better mobile support instead of window.open
+    // Use timeout to ensure toast is visible before redirect
     setTimeout(() => {
-      window.location.href = whatsappUrl;
+      // For mobile compatibility, try to use window.open first with _blank target
+      // If that doesn't work (e.g., popup blockers), fall back to location.href
+      const newWindow = window.open(whatsappUrl, '_blank');
+      
+      // If window.open was blocked or returned null, use location.href
+      if (!newWindow || newWindow.closed || typeof newWindow.closed === 'undefined') {
+        window.location.href = whatsappUrl;
+      }
+      
       form.reset();
     }, 1500);
   }
@@ -169,7 +177,7 @@ export const ContactForm = () => {
           )}
         />
         
-        <Button type="submit" className="w-full bg-[#A21C1C] hover:bg-[#911616]">
+        <Button type="submit" className="w-full bg-[#A21C1C] hover:bg-[#911616] transition-colors duration-300 shadow-md hover:shadow-lg">
           Enviar
         </Button>
       </form>

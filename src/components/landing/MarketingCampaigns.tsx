@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { useInView } from '@/hooks/useInView';
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
+import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel";
 import { ArrowRight } from 'lucide-react';
 
 export const MarketingCampaigns = () => {
@@ -22,7 +22,7 @@ export const MarketingCampaigns = () => {
           Criamos campanhas de marketing em parceria com seu estabelecimento, compartilhando esforços para maximizar seu alcance e resultados. Confira alguns cases de sucesso!
         </p>
         
-        <div ref={ref} className={`transition-all duration-500 ${inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+        <div ref={ref} className={`transition-all duration-500 shadow-lg rounded-lg overflow-hidden ${inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
           <Carousel className="w-full mx-auto" opts={{
             align: "center",
             loop: true
@@ -30,7 +30,7 @@ export const MarketingCampaigns = () => {
             <CarouselContent>
               {campaigns.map((campaign, index) => (
                 <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/2 xl:basis-1/3">
-                  <div className="overflow-hidden rounded-lg shadow-md p-1">
+                  <div className="overflow-hidden rounded-lg shadow-md hover:shadow-xl transition-all duration-300 p-1">
                     <img 
                       src={campaign} 
                       alt={`Campanha de Marketing ${index + 1}`} 
@@ -40,14 +40,11 @@ export const MarketingCampaigns = () => {
                 </CarouselItem>
               ))}
             </CarouselContent>
-            <div className="flex justify-center w-full gap-4 mt-6">
-              <CarouselPrevious className="relative static transform-none mx-2" />
-              <CarouselNext className="relative static transform-none mx-2" />
-            </div>
             <div className="flex justify-center w-full mt-4">
-              <div className="flex items-center gap-2 text-[#A21C1C] text-sm animate-pulse">
+              <div className="flex items-center gap-2 text-[#A21C1C] text-sm">
                 <span>Arraste para ver mais</span>
-                <ArrowRight className="w-4 h-4 animate-bounce" />
+                <ArrowRight className="w-4 h-4 animate-bounce animate-infinite" />
+                <div className="h-0.5 w-12 bg-gradient-to-r from-transparent via-[#A21C1C] to-transparent animate-pulse"></div>
               </div>
             </div>
           </Carousel>

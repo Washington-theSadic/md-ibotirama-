@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { useInView } from '@/hooks/useInView';
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
+import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel";
 import { ArrowRight } from 'lucide-react';
 
 export const TeamSection = () => {
@@ -15,24 +15,23 @@ export const TeamSection = () => {
   return <section className="py-16 px-4 bg-white">
       <div className="container mx-auto">
         <div ref={ref} className={`grid grid-cols-1 md:grid-cols-2 gap-8 items-center transition-all duration-500 ${inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-          <div className="relative">
+          <div className="relative shadow-lg rounded-lg overflow-hidden">
             <Carousel opts={{
               align: "start",
               loop: true
             }} className="w-full">
               <CarouselContent>
                 {teamImages.map((image, index) => <CarouselItem key={index} className="basis-full">
-                    <img src={image} alt={`Equipe Mais Delivery ${index + 1}`} className="rounded-lg shadow-md h-70 md:h-80 w-full object-cover" />
+                    <img src={image} alt={`Equipe Mais Delivery ${index + 1}`} className="rounded-lg shadow-md h-70 md:h-80 w-full object-cover hover:scale-105 transition-transform duration-300" />
                   </CarouselItem>)}
               </CarouselContent>
-              <div className="flex justify-center w-full gap-4 mt-4">
-                <CarouselPrevious className="relative static transform-none mx-1" />
-                <CarouselNext className="relative static transform-none mx-1" />
-              </div>
               <div className="flex justify-center w-full mt-4">
-                <div className="flex items-center gap-2 text-[#A21C1C] text-sm animate-pulse">
-                  <span>Arraste para ver mais</span>
-                  <ArrowRight className="w-4 h-4 animate-bounce" />
+                <div className="flex flex-col items-center gap-1">
+                  <div className="flex items-center gap-2 text-[#A21C1C] text-sm">
+                    <span>Arraste para ver mais</span>
+                    <ArrowRight className="w-4 h-4 animate-bounce animate-infinite" />
+                  </div>
+                  <div className="h-0.5 w-24 bg-gradient-to-r from-transparent via-[#A21C1C] to-transparent animate-pulse"></div>
                 </div>
               </div>
             </Carousel>
