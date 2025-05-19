@@ -1,9 +1,7 @@
-
 import React from 'react';
 import { useInView } from '@/hooks/useInView';
 import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel";
 import { ArrowRight } from 'lucide-react';
-
 export const TeamSection = () => {
   const {
     ref,
@@ -17,9 +15,9 @@ export const TeamSection = () => {
         <div ref={ref} className={`grid grid-cols-1 md:grid-cols-2 gap-8 items-center transition-all duration-500 ${inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
           <div className="relative shadow-lg rounded-lg overflow-hidden">
             <Carousel opts={{
-              align: "start",
-              loop: true
-            }} className="w-full">
+            align: "start",
+            loop: true
+          }} className="<div class=\"flex flex-col md:flex-row items-start gap-6\">\n  <!-- Texto -->\n  <div class=\"w-full md:w-1/2\">\n    <h2 class=\"text-xl font-bold text-[#A21C1C] mb-2\">\n      Uma Equipe Dedicada ao Seu Sucesso\n    </h2>\n    <p class=\"text-gray-800\">\n      Por tr\xE1s da nossa tecnologia existe uma equipe completa de profissionais dedicados a garantir o sucesso do seu neg\xF3cio. Nossa central de monitoramento funciona das 7:30 \xE0s 23:30, todos os dias, garantindo que cada pedido seja entregue com excel\xEAncia.\n    </p>\n  </div>\n\n  <!-- Carrossel -->\n  <div class=\"w-full md:w-1/2\">\n    <!-- Seu carrossel aqui -->\n  </div>\n</div>\n">
               <CarouselContent>
                 {teamImages.map((image, index) => <CarouselItem key={index} className="basis-full">
                     <img src={image} alt={`Equipe Mais Delivery ${index + 1}`} className="rounded-lg shadow-md h-70 md:h-80 w-full object-cover hover:scale-105 transition-transform duration-300" />
