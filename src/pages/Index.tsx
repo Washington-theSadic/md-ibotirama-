@@ -8,7 +8,8 @@ import { Testimonials } from '@/components/landing/Testimonials';
 import { Advantages } from '@/components/landing/Advantages';
 import { BusinessTypes } from '@/components/landing/BusinessTypes';
 import { DeliveryOptions } from '@/components/landing/DeliveryOptions';
-import { Pricing } from '@/components/landing/Pricing';
+import { TeamSection } from '@/components/landing/TeamSection';
+import { MarketingCampaigns } from '@/components/landing/MarketingCampaigns';
 import { CallToAction } from '@/components/landing/CallToAction';
 import { Footer } from '@/components/landing/Footer';
 
@@ -44,11 +45,12 @@ const Index = () => {
       <Hero />
       <Benefits />
       <HowItWorks />
+      <TeamSection />
+      <MarketingCampaigns />
       <Testimonials />
       <DeliveryOptions />
       <BusinessTypes />
       <Advantages />
-      <Pricing />
       <CallToAction />
       <Footer />
     </div>

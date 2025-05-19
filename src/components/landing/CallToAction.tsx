@@ -2,9 +2,18 @@
 import React, { useEffect, useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { MessageSquare } from 'lucide-react';
+import { 
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger
+} from "@/components/ui/dialog";
+import { ContactForm } from './ContactForm';
 
 export const CallToAction = () => {
   const [isPulsing, setIsPulsing] = useState(false);
+  const [isFormOpen, setIsFormOpen] = useState(false);
   
   useEffect(() => {
     const interval = setInterval(() => {
@@ -31,38 +40,41 @@ export const CallToAction = () => {
           Cadastre seu negócio agora e comece a vender mais
         </p>
         
-        <Button
-          asChild
-          size="lg"
-          className={`text-lg bg-[#A21C1C] hover:bg-[#911616] ${isPulsing ? 'animate-pulse' : ''}`}
-        >
-          <a 
-            href="https://wa.me/5577991301796" 
-            target="_blank" 
-            rel="noopener noreferrer"
-            className="flex items-center justify-center"
-          >
-            <MessageSquare className="mr-2" />
-            WhatsApp: (77) 99130-1796
-          </a>
-        </Button>
+        <Dialog open={isFormOpen} onOpenChange={setIsFormOpen}>
+          <DialogTrigger asChild>
+            <Button
+              size="lg"
+              className={`text-lg bg-[#A21C1C] hover:bg-[#911616] ${isPulsing ? 'animate-pulse' : ''}`}
+            >
+              Quero ser parceiro
+            </Button>
+          </DialogTrigger>
+          <DialogContent className="sm:max-w-[500px]">
+            <DialogHeader>
+              <DialogTitle className="text-xl text-[#A21C1C]">Entre em contato</DialogTitle>
+            </DialogHeader>
+            <ContactForm />
+          </DialogContent>
+        </Dialog>
 
         <div className="fixed bottom-4 right-4 z-50">
-          <Button
-            asChild
-            size="icon"
-            className="h-14 w-14 rounded-full bg-[#A21C1C] hover:bg-[#911616] shadow-lg flex items-center justify-center"
-          >
-            <a 
-              href="https://wa.me/5577991301796" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              aria-label="Contato via WhatsApp"
-              className="flex items-center justify-center"
-            >
-              <MessageSquare className="h-6 w-6" />
-            </a>
-          </Button>
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button
+                size="icon"
+                className="h-14 w-14 rounded-full bg-[#A21C1C] hover:bg-[#911616] shadow-lg flex items-center justify-center"
+                aria-label="Contato via WhatsApp"
+              >
+                <MessageSquare className="h-6 w-6" />
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-[500px]">
+              <DialogHeader>
+                <DialogTitle className="text-xl text-[#A21C1C]">Entre em contato</DialogTitle>
+              </DialogHeader>
+              <ContactForm />
+            </DialogContent>
+          </Dialog>
         </div>
       </div>
     </section>

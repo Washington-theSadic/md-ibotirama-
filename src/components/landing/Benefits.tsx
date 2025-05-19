@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Check } from 'lucide-react';
 import { useInView } from '@/hooks/useInView';
@@ -9,8 +10,8 @@ export const Benefits = () => {
     threshold: 0.1
   });
   const features = [{
-    title: "Trabalhamos com taxas e comissões justas",
-    description: "Sem mensalidade. Pague apenas 9,5% sobre as vendas que você realizar."
+    title: "Publicidade e Marketing",
+    description: "Acesso a campanhas e promoções dentro da plataforma, além de ações de marketing cooperado onde dividimos os custos para maximizar o alcance. Trabalhamos juntos para que sua marca ganhe mais visibilidade."
   }, {
     title: "Garantimos transparência financeira",
     description: "Tenha acesso a relatórios detalhados sobre o seu negócio."
