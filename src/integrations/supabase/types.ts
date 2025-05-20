@@ -9,7 +9,81 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      [_ in never]: never
+      admins: {
+        Row: {
+          created_at: string | null
+          email: string
+          id: string
+          is_super_admin: boolean
+        }
+        Insert: {
+          created_at?: string | null
+          email: string
+          id?: string
+          is_super_admin?: boolean
+        }
+        Update: {
+          created_at?: string | null
+          email?: string
+          id?: string
+          is_super_admin?: boolean
+        }
+        Relationships: []
+      }
+      pricing: {
+        Row: {
+          adhesion_fee: number
+          commission_percentage: number
+          id: string
+          show_pricing: boolean
+          updated_at: string | null
+        }
+        Insert: {
+          adhesion_fee?: number
+          commission_percentage?: number
+          id?: string
+          show_pricing?: boolean
+          updated_at?: string | null
+        }
+        Update: {
+          adhesion_fee?: number
+          commission_percentage?: number
+          id?: string
+          show_pricing?: boolean
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      site_links: {
+        Row: {
+          active: boolean
+          display_order: number
+          id: string
+          name: string
+          section: string
+          updated_at: string | null
+          url: string
+        }
+        Insert: {
+          active?: boolean
+          display_order: number
+          id?: string
+          name: string
+          section: string
+          updated_at?: string | null
+          url: string
+        }
+        Update: {
+          active?: boolean
+          display_order?: number
+          id?: string
+          name?: string
+          section?: string
+          updated_at?: string | null
+          url?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

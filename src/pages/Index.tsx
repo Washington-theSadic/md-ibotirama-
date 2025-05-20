@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import { Header } from '@/components/landing/Header';
 import { Hero } from '@/components/landing/Hero';
@@ -12,6 +11,7 @@ import { TeamSection } from '@/components/landing/TeamSection';
 import { MarketingCampaigns } from '@/components/landing/MarketingCampaigns';
 import { CallToAction } from '@/components/landing/CallToAction';
 import { Footer } from '@/components/landing/Footer';
+import { Pricing } from '@/components/landing/Pricing';
 
 const Index = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -49,20 +49,23 @@ const Index = () => {
   }, [lastScrollY]);
 
   return (
-    <div className="relative bg-white overflow-x-hidden">
-      <Header isScrolled={isScrolled} visible={headerVisible} />
+    <main className="overflow-hidden">
+      <Header />
       <Hero />
+      <BusinessTypes />
       <Benefits />
       <HowItWorks />
-      <TeamSection />
-      <MarketingCampaigns />
-      <Testimonials />
-      <DeliveryOptions />
-      <BusinessTypes />
       <Advantages />
+      <DeliveryOptions />
+      <TeamSection />
+      <Testimonials />
+      <MarketingCampaigns />
+      
+      <Pricing />
+      
       <CallToAction />
       <Footer />
-    </div>
+    </main>
   );
 };
 

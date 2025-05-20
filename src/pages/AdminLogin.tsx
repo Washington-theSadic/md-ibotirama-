@@ -1,12 +1,13 @@
 
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/components/ui/use-toast";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { supabase } from "@/integrations/supabase/client";
+import { ArrowLeft } from 'lucide-react';
 
 const AdminLogin = () => {
   const [email, setEmail] = useState('');
@@ -31,39 +32,82 @@ const AdminLogin = () => {
     }
   }, []);
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
 
-    // Check if the email and password match any admin account
-    const foundAccount = adminAccounts.find(
-      account => account.email === email && account.password === password
-    );
-
-    if (foundAccount) {
-      // Set admin authentication in localStorage
-      localStorage.setItem('admin-auth', 'true');
-      localStorage.setItem('admin-email', email);
-      
-      toast({
-        title: "Login realizado com sucesso!",
-        description: "Bem-vindo ao painel administrativo.",
-        duration: 3000,
+    try {
+      // Try to log in with Supabase
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
       });
-      
-      navigate('/admin/dashboard');
-    } else {
+
+      if (error) {
+        // If Supabase login fails, try localStorage fallback
+        const foundAccount = adminAccounts.find(
+          account => account.email === email && account.password === password
+        );
+
+        if (foundAccount) {
+          // Set admin authentication in localStorage
+          localStorage.setItem('admin-auth', 'true');
+          localStorage.setItem('admin-email', email);
+          
+          toast({
+            title: "Login realizado com sucesso!",
+            description: "Bem-vindo ao painel administrativo.",
+            duration: 3000,
+          });
+          
+          navigate('/admin/dashboard');
+        } else {
+          toast({
+            title: "Falha no login",
+            description: "Email ou senha incorretos.",
+            variant: "destructive",
+            duration: 3000,
+          });
+        }
+      } else {
+        // Supabase login successful
+        localStorage.setItem('admin-auth', 'true');
+        localStorage.setItem('admin-email', email);
+        
+        // Check if admin exists in the admins table
+        const { data: adminData, error: adminError } = await supabase
+          .from('admins')
+          .select('*')
+          .eq('email', email)
+          .single();
+
+        // If admin doesn't exist, insert it
+        if (adminError) {
+          await supabase.from('admins').insert({ email });
+        }
+        
+        toast({
+          title: "Login realizado com sucesso!",
+          description: "Bem-vindo ao painel administrativo.",
+          duration: 3000,
+        });
+        
+        navigate('/admin/dashboard');
+      }
+    } catch (error) {
+      console.error("Login error:", error);
       toast({
         title: "Falha no login",
-        description: "Email ou senha incorretos.",
+        description: "Ocorreu um erro ao realizar o login.",
         variant: "destructive",
         duration: 3000,
       });
     }
+    
     setIsLoading(false);
   };
 
-  const handleRegister = (e: React.FormEvent) => {
+  const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
 
@@ -90,32 +134,62 @@ const AdminLogin = () => {
       return;
     }
 
-    // Check if email already exists
-    const emailExists = adminAccounts.some(account => account.email === email);
-    if (emailExists) {
+    try {
+      // Register with Supabase
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+      });
+
+      if (error) {
+        // If Supabase registration fails, try localStorage fallback
+        // Check if email already exists
+        const emailExists = adminAccounts.some(account => account.email === email);
+        if (emailExists) {
+          toast({
+            title: "Erro no cadastro",
+            description: "Este email já está cadastrado.",
+            variant: "destructive",
+            duration: 3000,
+          });
+          setIsLoading(false);
+          return;
+        }
+
+        // Add new admin account to localStorage
+        const updatedAccounts = [...adminAccounts, { email, password }];
+        setAdminAccounts(updatedAccounts);
+        localStorage.setItem('admin-accounts', JSON.stringify(updatedAccounts));
+
+        toast({
+          title: "Cadastro realizado com sucesso!",
+          description: "Você pode acessar o painel administrativo agora.",
+          duration: 3000,
+        });
+
+        // Switch to login tab
+        setActiveTab("login");
+      } else {
+        // Supabase registration successful
+        toast({
+          title: "Cadastro realizado com sucesso!",
+          description: "Você pode acessar o painel administrativo agora.",
+          duration: 3000,
+        });
+
+        // Switch to login tab
+        setActiveTab("login");
+      }
+    } catch (error) {
+      console.error("Registration error:", error);
       toast({
         title: "Erro no cadastro",
-        description: "Este email já está cadastrado.",
+        description: "Ocorreu um erro ao realizar o cadastro.",
         variant: "destructive",
         duration: 3000,
       });
-      setIsLoading(false);
-      return;
     }
-
-    // Add new admin account
-    const updatedAccounts = [...adminAccounts, { email, password }];
-    setAdminAccounts(updatedAccounts);
-    localStorage.setItem('admin-accounts', JSON.stringify(updatedAccounts));
-
-    toast({
-      title: "Cadastro realizado com sucesso!",
-      description: "Você pode acessar o painel administrativo agora.",
-      duration: 3000,
-    });
-
-    // Switch to login tab
-    setActiveTab("login");
+    
     setIsLoading(false);
   };
 
@@ -123,7 +197,11 @@ const AdminLogin = () => {
     <div className="min-h-screen flex items-center justify-center bg-gray-100 p-4">
       <Card className="w-full max-w-md">
         <CardHeader className="space-y-1">
-          <div className="flex justify-center mb-4">
+          <div className="flex justify-between items-center mb-4">
+            <Link to="/" className="flex items-center text-gray-500 hover:text-gray-700">
+              <ArrowLeft className="h-4 w-4 mr-1" />
+              <span className="text-sm">Voltar à página principal</span>
+            </Link>
             <img 
               src="/lovable-uploads/476b844f-a75b-468e-ba6a-1e7345b83181.png" 
               alt="Mais Delivery Logo" 
