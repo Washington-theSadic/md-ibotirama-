@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import { Header } from '@/components/landing/Header';
 import { Hero } from '@/components/landing/Hero';
@@ -50,7 +51,7 @@ const Index = () => {
 
   return (
     <main className="overflow-hidden">
-      <Header />
+      <Header isScrolled={isScrolled} visible={headerVisible} />
       <Hero />
       <BusinessTypes />
       <Benefits />
