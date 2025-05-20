@@ -3,6 +3,7 @@ import React from 'react';
 import { useInView } from '@/hooks/useInView';
 import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel";
 import { ArrowRight } from 'lucide-react';
+import { useAdmin } from '@/context/AdminContext';
 
 export const MarketingCampaigns = () => {
   const {
@@ -12,7 +13,12 @@ export const MarketingCampaigns = () => {
     threshold: 0.1
   });
   
-  const campaigns = ["https://i.imgur.com/Z70ULv8.jpeg", "https://i.imgur.com/8lTN5pa.jpeg", "https://i.imgur.com/7ShMluZ.jpeg", "https://i.imgur.com/fNA8WBM.jpeg"];
+  const { marketingCampaigns } = useAdmin();
+  const campaigns = marketingCampaigns.map(campaign => campaign.imageUrl);
+  
+  if (campaigns.length === 0) {
+    return null;
+  }
   
   return (
     <section className="py-16 px-4 bg-gray-50">

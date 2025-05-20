@@ -4,6 +4,7 @@ import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carouse
 import { useInView } from '@/hooks/useInView';
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { ArrowRight } from 'lucide-react';
+import { useAdmin } from '@/context/AdminContext';
 
 export const Testimonials = () => {
   const {
@@ -13,29 +14,11 @@ export const Testimonials = () => {
     threshold: 0.1
   });
   
-  const testimonials = [
-    {
-      quote: "No dia que aceitei integrar meu estabelecimento ao Mais Delivery, vi resultados imediatos. Agora estamos oferecendo nossos produtos para um público muito maior, sem precisar de investimento.",
-      author: "José Pereira",
-      business: "JP LANCHES",
-      location: "Ibotirama/BA",
-      logoUrl: "/lovable-uploads/f77b271e-548c-4262-acd1-cc6a29a145d8.png"
-    }, 
-    {
-      quote: "A parceria com o Mais Delivery transformou nossa visibilidade no mercado. O aumento nas vendas foi notável já nos primeiros meses, e a taxa justa torna o serviço extremamente vantajoso.",
-      author: "Jairo Chagas",
-      business: "JC IMPORTS",
-      location: "Ibotirama/BA",
-      logoUrl: "/lovable-uploads/fd760325-58a6-411e-a047-98f63307db41.png"
-    },
-    {
-      quote: "Nossa entrada no Mais Delivery foi uma decisão acertada. A plataforma é intuitiva e a equipe de suporte realmente se importa com nosso sucesso. Recomendamos o serviço.",
-      author: "Eriques Fonseca",
-      business: "Lanchonete Pinguim",
-      location: "Barra/BA",
-      logoUrl: "/lovable-uploads/c301d3fe-5693-4938-b64e-be25b2d44acf.png"
-    }
-  ];
+  const { testimonials } = useAdmin();
+  
+  if (testimonials.length === 0) {
+    return null;
+  }
   
   return (
     <section id="depoimentos" className="py-16 px-4 bg-gray-50">

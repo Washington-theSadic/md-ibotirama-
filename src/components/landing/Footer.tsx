@@ -1,5 +1,6 @@
 
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 export const Footer = () => {
   return (
@@ -34,6 +35,15 @@ export const Footer = () => {
               Contato
             </a>
           </nav>
+        </div>
+        
+        <div className="mt-6 text-center">
+          <Link to="/admin" className="text-gray-500 hover:text-gray-400 text-xs transition-colors">
+            🛠️
+          </Link>
+          <p className="text-xs text-gray-600 mt-2">
+            © Mais Delivery Oeste da Bahia e Washington - Oesteframelab
+          </p>
         </div>
       </div>
     </footer>

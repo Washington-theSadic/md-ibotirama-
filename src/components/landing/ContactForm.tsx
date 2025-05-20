@@ -4,7 +4,6 @@ import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { useToast } from "@/components/ui/use-toast";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -20,8 +19,8 @@ const formSchema = z.object({
   phone: z.string().min(10, {
     message: "Por favor insira um telefone válido.",
   }),
-  segment: z.string({
-    required_error: "Por favor selecione um segmento.",
+  businessType: z.string().min(2, {
+    message: "Por favor informe o tipo do seu negócio.",
   }),
   message: z.string().optional(),
 });
@@ -36,7 +35,7 @@ export const ContactForm = () => {
       name: "",
       business: "",
       phone: "",
-      segment: "",
+      businessType: "",
       message: "",
     },
   });
@@ -44,39 +43,16 @@ export const ContactForm = () => {
   function onSubmit(data: FormValues) {
     // Show success toast
     toast({
-      title: "Formulário preenchido com sucesso!",
-      description: "Você será redirecionado para o WhatsApp.",
+      title: "Formulário enviado com sucesso!",
+      description: "Em breve entraremos em contato.",
     });
     
-    // Use timeout to ensure toast is visible before redirect
-    setTimeout(() => {
-      // Direct WhatsApp link without parameters
-      const whatsappUrl = "https://wa.link/74r6oq";
-      
-      // For mobile compatibility, try to use window.open first with _blank target
-      // If that doesn't work (e.g., popup blockers), fall back to location.href
-      const newWindow = window.open(whatsappUrl, '_blank');
-      
-      // If window.open was blocked or returned null, use location.href
-      if (!newWindow || newWindow.closed || typeof newWindow.closed === 'undefined') {
-        window.location.href = whatsappUrl;
-      }
-      
-      form.reset();
-    }, 1500);
+    // Note: ClickUp integration will be added later
+    console.log("Form data for ClickUp integration:", data);
+    
+    // Reset form after submission
+    form.reset();
   }
-
-  const segments = [
-    "Restaurante",
-    "Lanchonete",
-    "Pizzaria",
-    "Farmácia",
-    "Mercado",
-    "Conveniência",
-    "Pet Shop",
-    "Serviços",
-    "Outro"
-  ];
 
   return (
     <Form {...form}>
@@ -125,24 +101,13 @@ export const ContactForm = () => {
         
         <FormField
           control={form.control}
-          name="segment"
+          name="businessType"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Segmento</FormLabel>
-              <Select onValueChange={field.onChange} defaultValue={field.value}>
-                <FormControl>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Selecione o segmento" />
-                  </SelectTrigger>
-                </FormControl>
-                <SelectContent>
-                  {segments.map((segment) => (
-                    <SelectItem key={segment} value={segment}>
-                      {segment}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+              <FormLabel>Qual o tipo do seu negócio?</FormLabel>
+              <FormControl>
+                <Input placeholder="Ex: Restaurante, Lanchonete, etc." {...field} />
+              </FormControl>
               <FormMessage />
             </FormItem>
           )}

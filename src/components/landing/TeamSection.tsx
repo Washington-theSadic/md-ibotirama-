@@ -3,6 +3,7 @@ import React from 'react';
 import { useInView } from '@/hooks/useInView';
 import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel";
 import { ArrowRight } from 'lucide-react';
+import { useAdmin } from '@/context/AdminContext';
 
 export const TeamSection = () => {
   const {
@@ -11,7 +12,13 @@ export const TeamSection = () => {
   } = useInView({
     threshold: 0.1
   });
-  const teamImages = ["https://i.imgur.com/eKGLi9U.jpeg", "https://i.imgur.com/oILzGmK.jpeg"];
+  
+  const { teamMembers } = useAdmin();
+  const teamImages = teamMembers.map(member => member.imageUrl);
+  
+  if (teamImages.length === 0) {
+    return null;
+  }
   
   return (
     <section className="py-16 px-4 bg-white">
