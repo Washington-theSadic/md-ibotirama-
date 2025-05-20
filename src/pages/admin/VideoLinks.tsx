@@ -63,7 +63,8 @@ const VideoLinks = () => {
   const onSubmitAdd = (data: VideoFormValues) => {
     const newVideo = {
       id: `video-${Date.now()}`,
-      ...data,
+      title: data.title,
+      url: data.url
     };
     
     updateVideos([...videos, newVideo]);
@@ -80,7 +81,11 @@ const VideoLinks = () => {
     
     const updatedVideos = videos.map(video => 
       video.id === currentVideo 
-        ? { ...video, ...data }
+        ? { 
+            ...video,
+            title: data.title,
+            url: data.url 
+          }
         : video
     );
     

@@ -87,8 +87,11 @@ const Testimonials = () => {
   const onSubmitAdd = (data: TestimonialFormValues) => {
     const newTestimonial = {
       id: `testimonial-${Date.now()}`,
-      ...data,
-      logoUrl: tempLogoUrl || '/placeholder.svg' // Use default logo if none selected
+      quote: data.quote,
+      author: data.author,
+      business: data.business,
+      location: data.location,
+      logoUrl: tempLogoUrl || '/placeholder.svg'
     };
     
     updateTestimonials([...testimonials, newTestimonial]);
@@ -105,7 +108,14 @@ const Testimonials = () => {
     
     const updatedTestimonials = testimonials.map(testimonial => 
       testimonial.id === currentTestimonial 
-        ? { ...testimonial, ...data, logoUrl: tempLogoUrl }
+        ? { 
+            ...testimonial,
+            quote: data.quote,
+            author: data.author,
+            business: data.business,
+            location: data.location,
+            logoUrl: tempLogoUrl || testimonial.logoUrl
+          }
         : testimonial
     );
     
