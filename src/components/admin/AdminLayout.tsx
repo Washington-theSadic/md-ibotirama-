@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { LogOut, Image, Users, MessageSquare, Video } from 'lucide-react';
@@ -11,9 +11,18 @@ interface AdminLayoutProps {
 
 export const AdminLayout: React.FC<AdminLayoutProps> = ({ children, active }) => {
   const navigate = useNavigate();
+  const [adminEmail, setAdminEmail] = useState<string>('');
+  
+  useEffect(() => {
+    const email = localStorage.getItem('admin-email');
+    if (email) {
+      setAdminEmail(email);
+    }
+  }, []);
   
   const handleLogout = () => {
     localStorage.removeItem('admin-auth');
+    localStorage.removeItem('admin-email');
     navigate('/admin');
   };
   
@@ -36,15 +45,18 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({ children, active }) =>
           />
           <h1 className="text-xl font-bold hidden sm:block">Painel Administrativo</h1>
         </div>
-        <Button 
-          variant="outline" 
-          size="sm" 
-          className="text-white border-white hover:bg-white hover:text-[#1F2937]"
-          onClick={handleLogout}
-        >
-          <LogOut size={16} className="mr-2" />
-          Sair
-        </Button>
+        <div className="flex items-center gap-4">
+          <span className="text-sm hidden md:block text-gray-300">{adminEmail}</span>
+          <Button 
+            variant="outline" 
+            size="sm" 
+            className="text-white border-white hover:bg-white hover:text-[#1F2937]"
+            onClick={handleLogout}
+          >
+            <LogOut size={16} className="mr-2" />
+            Sair
+          </Button>
+        </div>
       </header>
       
       <div className="flex flex-1">
