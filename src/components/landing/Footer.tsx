@@ -61,7 +61,7 @@ export const Footer = () => {
         </div>
         
         <div className="mt-6 text-center">
-          <p className="text-xs text-gray-600 mt-2">
+          <p className="text-xs text-gray-400 mt-2">
             © Mais Delivery Oeste da Bahia e Washington - Oesteframelab
           </p>
         </div>
