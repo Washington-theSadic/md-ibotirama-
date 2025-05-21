@@ -7,7 +7,6 @@ import { ContactForm } from './ContactForm';
 
 export const CallToAction = () => {
   const [isPulsing, setIsPulsing] = useState(false);
-  const [isFormOpen, setIsFormOpen] = useState(false);
   // Get the ClickUp form URL from localStorage (set in AdminDashboard)
   const [clickUpFormUrl, setClickUpFormUrl] = useState<string>('');
   
@@ -33,8 +32,8 @@ export const CallToAction = () => {
     if (clickUpFormUrl) {
       window.open(clickUpFormUrl, '_blank');
     } else {
-      // If no ClickUp URL is set, open the dialog with the contact form as fallback
-      setIsFormOpen(true);
+      // Fallback in case no URL is set - simply do nothing or console log
+      console.log("Nenhuma URL de formulário ClickUp configurada");
     }
   };
 
@@ -48,21 +47,13 @@ export const CallToAction = () => {
           Cadastre seu negócio agora e comece a vender mais
         </p>
         
-        <Dialog open={isFormOpen} onOpenChange={setIsFormOpen}>
-          <Button 
-            size="lg" 
-            className={`text-lg bg-[#A21C1C] hover:bg-[#911616] shadow-lg hover:shadow-xl transition-all duration-300 ${isPulsing ? 'animate-pulse scale-105' : 'scale-100'}`}
-            onClick={handlePartnerClick}
-          >
-            Quero ser parceiro
-          </Button>
-          <DialogContent className="sm:max-w-[500px]">
-            <DialogHeader>
-              <DialogTitle className="text-xl text-[#A21C1C]">Entre em contato</DialogTitle>
-            </DialogHeader>
-            <ContactForm />
-          </DialogContent>
-        </Dialog>
+        <Button 
+          size="lg" 
+          className={`text-lg bg-[#A21C1C] hover:bg-[#911616] shadow-lg hover:shadow-xl transition-all duration-300 ${isPulsing ? 'animate-pulse scale-105' : 'scale-100'}`}
+          onClick={handlePartnerClick}
+        >
+          Quero ser parceiro
+        </Button>
 
         <div className="fixed bottom-4 right-4 z-50">
           <Dialog>
