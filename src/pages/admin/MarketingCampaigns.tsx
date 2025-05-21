@@ -115,12 +115,12 @@ const MarketingCampaigns = () => {
             <DialogHeader>
               <DialogTitle>Adicionar Nova Campanha</DialogTitle>
               <DialogDescription>
-                Faça upload de uma imagem ou adicione via URL
+                Adicione uma imagem via URL
               </DialogDescription>
             </DialogHeader>
             <ImageUploader 
               onImageSelected={handleAddImage} 
-              buttonText="Escolher Imagem"
+              buttonText="Adicionar Imagem"
             />
           </DialogContent>
         </Dialog>

@@ -115,12 +115,12 @@ const TeamImages = () => {
             <DialogHeader>
               <DialogTitle>Adicionar Imagem da Equipe</DialogTitle>
               <DialogDescription>
-                Faça upload de uma imagem ou adicione via URL
+                Adicione uma imagem via URL
               </DialogDescription>
             </DialogHeader>
             <ImageUploader 
               onImageSelected={handleAddImage} 
-              buttonText="Escolher Imagem"
+              buttonText="Adicionar Imagem"
             />
           </DialogContent>
         </Dialog>
