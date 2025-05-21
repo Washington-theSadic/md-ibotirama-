@@ -8,7 +8,7 @@ export const Footer = () => {
       <div className="container mx-auto">
         <div className="flex flex-col md:flex-row justify-between items-center">
           <div className="mb-4 md:mb-0">
-            <Link to="/admin">
+            <Link to="/">
               <img 
                 src="/lovable-uploads/476b844f-a75b-468e-ba6a-1e7345b83181.png" 
                 alt="Mais Delivery Logo" 
@@ -33,6 +33,9 @@ export const Footer = () => {
             <a href="#cta" className="text-gray-300 hover:text-white transition-colors">
               Contato
             </a>
+            <Link to="/admin" className="text-gray-300 hover:text-white transition-colors">
+              Admin
+            </Link>
           </nav>
         </div>
         

@@ -1,8 +1,8 @@
 
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { LogOut, Image, Users, MessageSquare, Video } from 'lucide-react';
+import { LogOut, Image, Users, MessageSquare, Video, ArrowLeft } from 'lucide-react';
 
 interface AdminLayoutProps {
   children: React.ReactNode;
@@ -12,18 +12,46 @@ interface AdminLayoutProps {
 export const AdminLayout: React.FC<AdminLayoutProps> = ({ children, active }) => {
   const navigate = useNavigate();
   const [adminEmail, setAdminEmail] = useState<string>('');
+  const [hasUnsavedChanges, setHasUnsavedChanges] = useState<boolean>(false);
   
   useEffect(() => {
     const email = localStorage.getItem('admin-email');
     if (email) {
       setAdminEmail(email);
     }
-  }, []);
+    
+    // Handle beforeunload event to prevent accidental navigation when there are unsaved changes
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      if (hasUnsavedChanges) {
+        e.preventDefault();
+        e.returnValue = '';
+        return '';
+      }
+    };
+    
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+    };
+  }, [hasUnsavedChanges]);
   
   const handleLogout = () => {
-    localStorage.removeItem('admin-auth');
-    localStorage.removeItem('admin-email');
-    navigate('/admin');
+    if (hasUnsavedChanges) {
+      if (window.confirm('Você tem alterações não salvas. Deseja realmente sair?')) {
+        localStorage.removeItem('admin-auth');
+        localStorage.removeItem('admin-email');
+        navigate('/admin');
+      }
+    } else {
+      localStorage.removeItem('admin-auth');
+      localStorage.removeItem('admin-email');
+      navigate('/admin');
+    }
+  };
+  
+  // This function will be used by child components to notify about unsaved changes
+  const setUnsavedChanges = (value: boolean) => {
+    setHasUnsavedChanges(value);
   };
   
   const menuItems = [
@@ -31,22 +59,33 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({ children, active }) =>
     { id: 'marketing', label: 'Campanhas', icon: <Image size={18} />, path: '/admin/marketing' },
     { id: 'team', label: 'Equipe', icon: <Users size={18} />, path: '/admin/team' },
     { id: 'testimonials', label: 'Depoimentos', icon: <MessageSquare size={18} />, path: '/admin/testimonials' },
-    { id: 'videos', label: 'Vídeos', icon: <Video size={18} />, path: '/admin/videos' }
   ];
   
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col">
       <header className="bg-[#1F2937] text-white px-6 py-4 flex justify-between items-center shadow-md">
         <div className="flex items-center space-x-4">
-          <img 
-            src="/lovable-uploads/476b844f-a75b-468e-ba6a-1e7345b83181.png" 
-            alt="Mais Delivery Logo" 
-            className="h-8"
-          />
+          <Link to="/">
+            <img 
+              src="/lovable-uploads/476b844f-a75b-468e-ba6a-1e7345b83181.png" 
+              alt="Mais Delivery Logo" 
+              className="h-8"
+            />
+          </Link>
           <h1 className="text-xl font-bold hidden sm:block">Painel Administrativo</h1>
         </div>
         <div className="flex items-center gap-4">
           <span className="text-sm hidden md:block text-gray-300">{adminEmail}</span>
+          <Link to="/">
+            <Button 
+              variant="outline" 
+              size="sm" 
+              className="text-white border-white hover:bg-white hover:text-[#1F2937]"
+            >
+              <ArrowLeft size={16} className="mr-2" />
+              Página Inicial
+            </Button>
+          </Link>
           <Button 
             variant="outline" 
             size="sm" 
@@ -68,7 +107,15 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({ children, active }) =>
                   <Button
                     variant={active === item.id ? "default" : "ghost"}
                     className={`w-full justify-start ${active === item.id ? 'bg-[#A21C1C] text-white hover:bg-[#911616]' : 'text-gray-600'}`}
-                    onClick={() => navigate(item.path)}
+                    onClick={() => {
+                      if (hasUnsavedChanges) {
+                        if (window.confirm('Você tem alterações não salvas. Deseja realmente sair desta página?')) {
+                          navigate(item.path);
+                        }
+                      } else {
+                        navigate(item.path);
+                      }
+                    }}
                   >
                     <span className="mr-2">{item.icon}</span>
                     <span className="hidden sm:inline">{item.label}</span>
@@ -80,9 +127,16 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({ children, active }) =>
         </aside>
         
         <main className="flex-1 p-6">
-          {children}
+          {/* Pass the setUnsavedChanges function to children via React clone */}
+          {React.Children.map(children, child => {
+            if (React.isValidElement(child)) {
+              return React.cloneElement(child, { setUnsavedChanges } as any);
+            }
+            return child;
+          })}
         </main>
       </div>
     </div>
   );
 };
+
