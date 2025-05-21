@@ -3,7 +3,7 @@ import React from 'react';
 import { useInView } from '@/hooks/useInView';
 import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel";
 import { ArrowRight } from 'lucide-react';
-import { useAdmin } from '@/context/AdminContext';
+import { useCarouselImages } from '@/hooks/useCarouselImages';
 
 export const MarketingCampaigns = () => {
   const {
@@ -13,10 +13,9 @@ export const MarketingCampaigns = () => {
     threshold: 0.1
   });
   
-  const { marketingCampaigns } = useAdmin();
-  const campaigns = marketingCampaigns.map(campaign => campaign.imageUrl);
+  const { images, loading } = useCarouselImages('campaign');
   
-  if (campaigns.length === 0) {
+  if (loading || images.length === 0) {
     return null;
   }
   
@@ -37,11 +36,11 @@ export const MarketingCampaigns = () => {
             loop: true
           }}>
             <CarouselContent>
-              {campaigns.map((campaign, index) => (
-                <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/2 xl:basis-1/3">
+              {images.map((image, index) => (
+                <CarouselItem key={image.id} className="md:basis-1/2 lg:basis-1/2 xl:basis-1/3">
                   <div className="overflow-hidden rounded-lg shadow-md hover:shadow-xl transition-all duration-300 p-1">
                     <img 
-                      src={campaign} 
+                      src={image.image_url} 
                       alt={`Campanha de Marketing ${index + 1}`} 
                       className="w-full h-auto object-contain max-h-[500px] hover:scale-105 transition-transform duration-300" 
                     />

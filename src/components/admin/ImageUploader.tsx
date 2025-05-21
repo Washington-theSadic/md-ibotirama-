@@ -3,31 +3,36 @@ import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/use-toast";
-import { ImageIcon, Link } from 'lucide-react';
+import { ImageIcon, Link, Upload } from 'lucide-react';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 interface ImageUploaderProps {
   onImageSelected: (imageUrl: string) => void;
+  onFileUpload?: (file: File) => void;
   buttonText?: string;
 }
 
-export const ImageUploader: React.FC<ImageUploaderProps> = ({ onImageSelected, buttonText = "Selecionar Imagem" }) => {
+export const ImageUploader: React.FC<ImageUploaderProps> = ({ 
+  onImageSelected, 
+  onFileUpload,
+  buttonText = "Selecionar Imagem" 
+}) => {
   const [imageUrl, setImageUrl] = useState('');
-  const [isUrlMode, setIsUrlMode] = useState(false);
+  const [file, setFile] = useState<File | null>(null);
   const { toast } = useToast();
   
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
+    const selectedFile = e.target.files?.[0];
     
-    if (!file) return;
+    if (!selectedFile) return;
     
-    // Generate a local object URL for the image
-    const imageUrl = URL.createObjectURL(file);
-    onImageSelected(imageUrl);
+    setFile(selectedFile);
     
-    toast({
-      title: "Imagem selecionada",
-      description: "A imagem foi selecionada com sucesso!",
-    });
+    // If we don't have onFileUpload handler, use object URL
+    if (!onFileUpload) {
+      const objectUrl = URL.createObjectURL(selectedFile);
+      onImageSelected(objectUrl);
+    }
   };
   
   const handleUrlSubmit = () => {
@@ -52,74 +57,75 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({ onImageSelected, b
     
     onImageSelected(imageUrl);
     setImageUrl('');
-    
-    toast({
-      title: "Imagem adicionada",
-      description: "A imagem foi adicionada com sucesso!",
-    });
+  };
+
+  const handleUpload = () => {
+    if (!file || !onFileUpload) return;
+    onFileUpload(file);
   };
   
   return (
     <div className="space-y-4">
-      {!isUrlMode ? (
-        <div className="flex flex-col items-center p-6 border-2 border-dashed border-gray-300 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors">
-          <ImageIcon className="h-10 w-10 text-gray-400 mb-2" />
-          <p className="text-sm text-gray-600 mb-4">Clique para fazer upload de uma imagem</p>
-          <Input
-            type="file"
-            accept="image/*"
-            onChange={handleFileChange}
-            className="hidden"
-            id="image-upload"
-          />
-          <label htmlFor="image-upload">
-            <Button
-              type="button" 
-              variant="outline" 
-              className="bg-[#A21C1C] hover:bg-[#911616] text-white"
-            >
-              {buttonText}
-            </Button>
-          </label>
-          <p className="text-xs text-gray-500 mt-4">ou</p>
-          <Button 
-            variant="link" 
-            onClick={() => setIsUrlMode(true)} 
-            className="text-[#A21C1C]"
-          >
-            <Link size={16} className="mr-1" />
-            Adicionar por URL
-          </Button>
-        </div>
-      ) : (
-        <div className="p-6 border-2 border-dashed border-gray-300 rounded-lg bg-gray-50">
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            URL da imagem
-          </label>
-          <div className="flex space-x-2">
-            <Input
-              type="url"
-              placeholder="https://exemplo.com/imagem.jpg"
-              value={imageUrl}
-              onChange={(e) => setImageUrl(e.target.value)}
-              className="flex-1"
-            />
-            <Button 
-              onClick={handleUrlSubmit}
-              className="bg-[#A21C1C] hover:bg-[#911616] text-white"
-            >
-              Adicionar
-            </Button>
+      <Tabs defaultValue="upload">
+        <TabsList className="grid w-full grid-cols-2">
+          <TabsTrigger value="upload">Enviar Arquivo</TabsTrigger>
+          <TabsTrigger value="url">Adicionar por URL</TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="upload" className="space-y-4">
+          <div className="flex flex-col items-center p-6 border-2 border-dashed border-gray-300 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors">
+            <ImageIcon className="h-10 w-10 text-gray-400 mb-2" />
+            <p className="text-sm text-gray-600 mb-4">Clique para fazer upload de uma imagem</p>
+            
+            <div className="space-y-4 w-full">
+              <Input
+                type="file"
+                accept="image/*"
+                onChange={handleFileChange}
+                className="w-full"
+              />
+              
+              {file && (
+                <div className="mt-4">
+                  <p className="text-sm text-gray-600">Arquivo selecionado: {file.name}</p>
+                  {onFileUpload && (
+                    <Button
+                      onClick={handleUpload}
+                      className="bg-[#A21C1C] hover:bg-[#911616] text-white mt-2 w-full"
+                    >
+                      <Upload size={16} className="mr-2" />
+                      Enviar Imagem
+                    </Button>
+                  )}
+                </div>
+              )}
+            </div>
           </div>
-          <Button 
-            variant="link" 
-            onClick={() => setIsUrlMode(false)} 
-            className="mt-4 text-[#A21C1C]"
-          >
-            Voltar para upload de arquivo
-          </Button>
-        </div>
-      )}
+        </TabsContent>
+        
+        <TabsContent value="url">
+          <div className="p-6 border-2 border-dashed border-gray-300 rounded-lg bg-gray-50">
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              URL da imagem
+            </label>
+            <div className="flex space-x-2">
+              <Input
+                type="url"
+                placeholder="https://exemplo.com/imagem.jpg"
+                value={imageUrl}
+                onChange={(e) => setImageUrl(e.target.value)}
+                className="flex-1"
+              />
+              <Button 
+                onClick={handleUrlSubmit}
+                className="bg-[#A21C1C] hover:bg-[#911616] text-white"
+              >
+                Adicionar
+              </Button>
+            </div>
+          </div>
+        </TabsContent>
+      </Tabs>
     </div>
   );
 };

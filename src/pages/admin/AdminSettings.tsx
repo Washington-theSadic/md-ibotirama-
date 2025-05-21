@@ -1,263 +1,86 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { AdminLayout } from '@/components/admin/AdminLayout';
 import { AdminGuard } from '@/components/admin/AdminGuard';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Switch } from "@/components/ui/switch";
+import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/use-toast";
-import { supabase } from '@/integrations/supabase/client';
-import { Edit2, Save, Trash2 } from 'lucide-react';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import { Switch } from "@/components/ui/switch";
+import { usePrices } from '@/hooks/usePrices';
+import { Loader2 } from 'lucide-react';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Label } from "@/components/ui/label";
 
-interface PricingData {
-  id: string;
-  adhesion_fee: number;
-  commission_percentage: number;
-  show_pricing: boolean;
-}
+const priceSchema = z.object({
+  adhesion_fee: z.coerce.number().min(0, { message: "O valor não pode ser negativo" }),
+  commission_percentage: z.coerce.number().min(0, { message: "O percentual não pode ser negativo" }).max(100, { message: "O percentual não pode ser maior que 100%" }),
+  price_c: z.coerce.number().min(0, { message: "O valor não pode ser negativo" }).optional().nullable(),
+});
 
-interface SiteLink {
-  id: string;
-  name: string;
-  url: string;
-  section: string;
-  display_order: number;
-  active: boolean;
-}
+type PriceFormValues = z.infer<typeof priceSchema>;
 
 const AdminSettings = () => {
-  const [pricing, setPricing] = useState<PricingData | null>(null);
-  const [footerLinks, setFooterLinks] = useState<SiteLink[]>([]);
-  const [isSaving, setIsSaving] = useState(false);
-  const [newLink, setNewLink] = useState({ name: '', url: '', section: 'footer', active: true });
+  const { prices, loading, updatePrices } = usePrices();
+  const [showPriceSection, setShowPriceSection] = useState(prices?.active ?? true);
   const { toast } = useToast();
-
-  useEffect(() => {
-    fetchPricing();
-    fetchFooterLinks();
-  }, []);
-
-  const fetchPricing = async () => {
-    try {
-      const { data, error } = await supabase
-        .from('pricing')
-        .select('*')
-        .single();
-      
-      if (error) {
-        console.error('Error fetching pricing data:', error);
-        return;
-      }
-      
-      if (data) {
-        setPricing(data);
-      }
-    } catch (err) {
-      console.error('Failed to fetch pricing data:', err);
+  
+  const form = useForm<PriceFormValues>({
+    resolver: zodResolver(priceSchema),
+    defaultValues: {
+      adhesion_fee: prices?.price_a ?? 150,
+      commission_percentage: prices?.price_b ?? 9.5,
+      price_c: prices?.price_c ?? null,
     }
-  };
+  });
 
-  const fetchFooterLinks = async () => {
-    try {
-      const { data, error } = await supabase
-        .from('site_links')
-        .select('*')
-        .eq('section', 'footer')
-        .order('display_order', { ascending: true });
-      
-      if (error) {
-        console.error('Error fetching footer links:', error);
-        return;
-      }
-      
-      if (data) {
-        setFooterLinks(data);
-      }
-    } catch (err) {
-      console.error('Failed to fetch footer links:', err);
+  // Update form values when prices are loaded
+  React.useEffect(() => {
+    if (prices) {
+      form.reset({
+        adhesion_fee: prices.price_a,
+        commission_percentage: prices.price_b,
+        price_c: prices.price_c,
+      });
+      setShowPriceSection(prices.active);
     }
-  };
-
-  const handlePricingChange = (field: string, value: any) => {
-    if (pricing) {
-      setPricing({ ...pricing, [field]: value });
-    }
-  };
-
-  const savePricing = async () => {
-    if (!pricing) return;
+  }, [prices, form]);
+  
+  const onSubmit = async (data: PriceFormValues) => {
+    const success = await updatePrices({
+      active: showPriceSection,
+      price_a: data.adhesion_fee,
+      price_b: data.commission_percentage,
+      price_c: data.price_c,
+    });
     
-    setIsSaving(true);
-    try {
-      const { error } = await supabase
-        .from('pricing')
-        .update({
-          adhesion_fee: pricing.adhesion_fee,
-          commission_percentage: pricing.commission_percentage,
-          show_pricing: pricing.show_pricing,
-          updated_at: new Date().toISOString()
-        })
-        .eq('id', pricing.id);
-      
-      if (error) {
-        console.error('Error updating pricing:', error);
-        toast({
-          title: "Erro ao salvar",
-          description: "Não foi possível atualizar os preços.",
-          variant: "destructive",
-        });
-        return;
-      }
-      
+    if (success) {
       toast({
-        title: "Preços atualizados",
-        description: "As informações de preços foram atualizadas com sucesso.",
-      });
-    } catch (err) {
-      console.error('Failed to update pricing:', err);
-      toast({
-        title: "Erro ao salvar",
-        description: "Ocorreu um erro ao atualizar os preços.",
-        variant: "destructive",
-      });
-    } finally {
-      setIsSaving(false);
-    }
-  };
-
-  const handleLinkChange = (id: string, field: string, value: any) => {
-    setFooterLinks(links => links.map(link => 
-      link.id === id ? { ...link, [field]: value } : link
-    ));
-  };
-
-  const saveLink = async (id: string) => {
-    setIsSaving(true);
-    const link = footerLinks.find(l => l.id === id);
-    if (!link) return;
-    
-    try {
-      const { error } = await supabase
-        .from('site_links')
-        .update({
-          name: link.name,
-          url: link.url,
-          active: link.active,
-          updated_at: new Date().toISOString()
-        })
-        .eq('id', id);
-      
-      if (error) {
-        console.error('Error updating link:', error);
-        toast({
-          title: "Erro ao salvar",
-          description: "Não foi possível atualizar o link.",
-          variant: "destructive",
-        });
-        return;
-      }
-      
-      toast({
-        title: "Link atualizado",
-        description: "O link foi atualizado com sucesso.",
-      });
-    } catch (err) {
-      console.error('Failed to update link:', err);
-      toast({
-        title: "Erro ao salvar",
-        description: "Ocorreu um erro ao atualizar o link.",
-        variant: "destructive",
-      });
-    } finally {
-      setIsSaving(false);
-    }
-  };
-
-  const deleteLink = async (id: string) => {
-    try {
-      const { error } = await supabase
-        .from('site_links')
-        .delete()
-        .eq('id', id);
-      
-      if (error) {
-        console.error('Error deleting link:', error);
-        toast({
-          title: "Erro ao excluir",
-          description: "Não foi possível excluir o link.",
-          variant: "destructive",
-        });
-        return;
-      }
-      
-      setFooterLinks(links => links.filter(link => link.id !== id));
-      
-      toast({
-        title: "Link excluído",
-        description: "O link foi excluído com sucesso.",
-      });
-    } catch (err) {
-      console.error('Failed to delete link:', err);
-      toast({
-        title: "Erro ao excluir",
-        description: "Ocorreu um erro ao excluir o link.",
-        variant: "destructive",
+        title: "Configurações salvas",
+        description: "As configurações de preços foram atualizadas com sucesso",
       });
     }
   };
 
-  const addNewLink = async () => {
-    if (!newLink.name || !newLink.url) {
-      toast({
-        title: "Campos obrigatórios",
-        description: "Preencha o nome e a URL do link.",
-        variant: "destructive",
-      });
-      return;
-    }
-    
-    try {
-      // Get the highest display order
-      const maxOrder = footerLinks.length > 0 
-        ? Math.max(...footerLinks.map(link => link.display_order))
-        : 0;
-      
-      const { data, error } = await supabase
-        .from('site_links')
-        .insert({
-          ...newLink,
-          display_order: maxOrder + 1
-        })
-        .select('*')
-        .single();
-      
-      if (error) {
-        console.error('Error adding link:', error);
-        toast({
-          title: "Erro ao adicionar",
-          description: "Não foi possível adicionar o link.",
-          variant: "destructive",
-        });
-        return;
-      }
-      
-      setFooterLinks([...footerLinks, data]);
-      setNewLink({ name: '', url: '', section: 'footer', active: true });
-      
-      toast({
-        title: "Link adicionado",
-        description: "O novo link foi adicionado com sucesso.",
-      });
-    } catch (err) {
-      console.error('Failed to add link:', err);
-      toast({
-        title: "Erro ao adicionar",
-        description: "Ocorreu um erro ao adicionar o link.",
-        variant: "destructive",
-      });
-    }
+  const handleToggleChange = (checked: boolean) => {
+    setShowPriceSection(checked);
   };
+
+  if (loading) {
+    return (
+      <AdminGuard>
+        <AdminLayout active="settings">
+          <div className="flex justify-center items-center h-64">
+            <Loader2 className="h-10 w-10 animate-spin text-gray-500" />
+          </div>
+        </AdminLayout>
+      </AdminGuard>
+    );
+  }
 
   return (
     <AdminGuard>
@@ -266,139 +89,115 @@ const AdminSettings = () => {
           <h1 className="text-3xl font-bold text-gray-800 mb-2">Configurações</h1>
           <p className="text-gray-500">Gerencie as configurações do site</p>
         </div>
-
-        {pricing && (
-          <Card className="mb-8">
-            <CardHeader>
-              <CardTitle>Configurações de Preços</CardTitle>
-              <CardDescription>Defina os valores de taxas e adesão exibidos no site</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <label htmlFor="adhesion_fee" className="text-sm font-medium">
-                    Taxa de Adesão (R$)
-                  </label>
-                  <Input
-                    id="adhesion_fee"
-                    type="number"
-                    value={pricing.adhesion_fee}
-                    onChange={(e) => handlePricingChange('adhesion_fee', parseFloat(e.target.value))}
+        
+        <Tabs defaultValue="prices">
+          <TabsList className="mb-6">
+            <TabsTrigger value="prices">Preços</TabsTrigger>
+            <TabsTrigger value="footer">Links do Rodapé</TabsTrigger>
+          </TabsList>
+          
+          <TabsContent value="prices">
+            <Card>
+              <CardHeader>
+                <CardTitle>Configurações de Preços</CardTitle>
+                <CardDescription>
+                  Configure os preços exibidos na página inicial
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="flex items-center space-x-2 mb-6">
+                  <Switch 
+                    checked={showPriceSection} 
+                    onCheckedChange={handleToggleChange} 
+                    id="price-section-toggle"
                   />
+                  <Label htmlFor="price-section-toggle">
+                    {showPriceSection ? "Seção de preços visível" : "Seção de preços oculta"}
+                  </Label>
                 </div>
-                <div className="space-y-2">
-                  <label htmlFor="commission" className="text-sm font-medium">
-                    Comissão por Pedido (%)
-                  </label>
-                  <Input
-                    id="commission"
-                    type="number"
-                    step="0.1"
-                    value={pricing.commission_percentage}
-                    onChange={(e) => handlePricingChange('commission_percentage', parseFloat(e.target.value))}
-                  />
-                </div>
-              </div>
 
-              <div className="flex items-center space-x-2">
-                <Switch
-                  id="show_pricing"
-                  checked={pricing.show_pricing}
-                  onCheckedChange={(checked) => handlePricingChange('show_pricing', checked)}
-                />
-                <label htmlFor="show_pricing" className="text-sm font-medium">
-                  Exibir seção de preços no site
-                </label>
-              </div>
+                <Form {...form}>
+                  <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                    <FormField
+                      control={form.control}
+                      name="adhesion_fee"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Taxa de Adesão (R$)</FormLabel>
+                          <FormControl>
+                            <Input type="number" step="0.01" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
 
-              <div className="pt-4">
-                <Button 
-                  onClick={savePricing} 
-                  disabled={isSaving}
-                  className="bg-[#A21C1C] hover:bg-[#911616]"
-                >
-                  {isSaving ? "Salvando..." : "Salvar Alterações"}
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-        )}
+                    <FormField
+                      control={form.control}
+                      name="commission_percentage"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Percentual de Comissão (%)</FormLabel>
+                          <FormControl>
+                            <Input type="number" step="0.1" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
 
-        <Card>
-          <CardHeader>
-            <CardTitle>Links do Rodapé</CardTitle>
-            <CardDescription>Gerencie os links exibidos no rodapé do site</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              <div className="grid grid-cols-1 gap-4">
-                {footerLinks.map((link) => (
-                  <div key={link.id} className="flex flex-wrap gap-2 items-center p-3 border rounded-md">
-                    <div className="flex-1 space-y-2">
-                      <Input
-                        placeholder="Nome do link"
-                        value={link.name}
-                        onChange={(e) => handleLinkChange(link.id, 'name', e.target.value)}
-                      />
-                      <Input
-                        placeholder="URL do link"
-                        value={link.url}
-                        onChange={(e) => handleLinkChange(link.id, 'url', e.target.value)}
-                      />
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <Switch
-                        checked={link.active}
-                        onCheckedChange={(checked) => handleLinkChange(link.id, 'active', checked)}
-                      />
-                      <span className="text-sm">Ativo</span>
-                    </div>
-                    <div className="flex space-x-2">
-                      <Button
-                        variant="outline"
-                        size="icon"
-                        onClick={() => saveLink(link.id)}
-                      >
-                        <Save className="h-4 w-4" />
-                      </Button>
-                      <Button
-                        variant="destructive"
-                        size="icon"
-                        onClick={() => deleteLink(link.id)}
-                      >
-                        <Trash2 className="h-4 w-4" />
-                      </Button>
-                    </div>
-                  </div>
-                ))}
-              </div>
+                    <FormField
+                      control={form.control}
+                      name="price_c"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Preço C (Opcional)</FormLabel>
+                          <FormControl>
+                            <Input 
+                              type="number" 
+                              step="0.01" 
+                              {...field} 
+                              value={field.value || ''} 
+                              onChange={(e) => {
+                                const value = e.target.value === '' ? null : parseFloat(e.target.value);
+                                field.onChange(value);
+                              }}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
 
-              <div className="pt-4 border-t mt-6">
-                <h3 className="font-medium mb-3">Adicionar Novo Link</h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                  <Input
-                    placeholder="Nome do link"
-                    value={newLink.name}
-                    onChange={(e) => setNewLink({...newLink, name: e.target.value})}
-                  />
-                  <Input
-                    placeholder="URL do link (ex: #contato)"
-                    value={newLink.url}
-                    onChange={(e) => setNewLink({...newLink, url: e.target.value})}
-                  />
-                </div>
-                <div className="mt-3">
-                  <Button 
-                    onClick={addNewLink}
-                    className="bg-[#A21C1C] hover:bg-[#911616]"
-                  >
-                    Adicionar Link
-                  </Button>
-                </div>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+                    <Button 
+                      type="submit" 
+                      className="w-full bg-[#A21C1C] hover:bg-[#911616]"
+                    >
+                      Salvar Configurações
+                    </Button>
+                  </form>
+                </Form>
+              </CardContent>
+            </Card>
+          </TabsContent>
+          
+          <TabsContent value="footer">
+            <Card>
+              <CardHeader>
+                <CardTitle>Links do Rodapé</CardTitle>
+                <CardDescription>
+                  Gerencie os links exibidos no rodapé do site
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <p className="text-gray-500">
+                  Os links do rodapé são gerenciados através do painel administrativo do Supabase.
+                  Por favor, acesse o painel do Supabase para editar os links.
+                </p>
+              </CardContent>
+            </Card>
+          </TabsContent>
+        </Tabs>
       </AdminLayout>
     </AdminGuard>
   );

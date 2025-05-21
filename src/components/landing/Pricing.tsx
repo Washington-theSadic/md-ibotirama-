@@ -1,53 +1,21 @@
 
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { useInView } from '@/hooks/useInView';
 import { Check } from 'lucide-react';
-import { supabase } from '@/integrations/supabase/client';
+import { usePrices } from '@/hooks/usePrices';
 
 export const Pricing = () => {
   const { ref, inView } = useInView({ threshold: 0.1 });
-  const [pricingData, setPricingData] = useState({
-    adhesion_fee: 150,
-    commission_percentage: 9.5,
-    show_pricing: true
-  });
+  const { prices, loading } = usePrices();
   
-  useEffect(() => {
-    const fetchPricing = async () => {
-      try {
-        const { data, error } = await supabase
-          .from('pricing')
-          .select('*')
-          .single();
-        
-        if (error) {
-          console.error('Error fetching pricing data:', error);
-          return;
-        }
-        
-        if (data) {
-          setPricingData({
-            adhesion_fee: data.adhesion_fee,
-            commission_percentage: data.commission_percentage,
-            show_pricing: data.show_pricing
-          });
-        }
-      } catch (err) {
-        console.error('Failed to fetch pricing data:', err);
-      }
-    };
-    
-    fetchPricing();
-  }, []);
-  
-  if (!pricingData.show_pricing) {
+  if (loading || !prices || !prices.active) {
     return null;
   }
   
   const pricingOptions = [
     {
       title: "Taxa Única de Adesão",
-      price: `R$ ${pricingData.adhesion_fee.toFixed(2)}`,
+      price: `R$ ${prices.price_a.toFixed(2)}`,
       benefits: [
         "Presença no App Mais Delivery\nSeja encontrado por milhares de clientes em sua cidade.",
         "Cadastro do cardápio e suporte na ativação\nNossa equipe ajuda em todo o processo inicial.",
@@ -56,7 +24,7 @@ export const Pricing = () => {
     },
     {
       title: "Comissão por Pedido",
-      price: `${pricingData.commission_percentage}%`,
+      price: `${prices.price_b}%`,
       benefits: [
         "Sem mensalidade\nPague apenas pelos pedidos realizados.",
         "Cancelamento sem multas\nLiberdade total para sair quando quiser.",
@@ -64,6 +32,19 @@ export const Pricing = () => {
       ]
     }
   ];
+
+  // Add third pricing option if price_c exists
+  if (prices.price_c) {
+    pricingOptions.push({
+      title: "Plano Especial",
+      price: `R$ ${prices.price_c.toFixed(2)}`,
+      benefits: [
+        "Benefícios exclusivos\nAcesso a recursos premium.",
+        "Suporte prioritário\nAtendimento especializado.",
+        "Destaque no aplicativo\nMaior visibilidade para seu estabelecimento."
+      ]
+    });
+  }
 
   return (
     <section id="precos" className="py-16 px-4 bg-white">
@@ -74,7 +55,7 @@ export const Pricing = () => {
         
         <div 
           ref={ref}
-          className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-3xl mx-auto"
+          className={`grid grid-cols-1 md:grid-cols-${pricingOptions.length} gap-8 max-w-5xl mx-auto`}
         >
           {pricingOptions.map((option, index) => (
             <div 

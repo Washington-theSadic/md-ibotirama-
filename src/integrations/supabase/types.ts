@@ -30,6 +30,57 @@ export type Database = {
         }
         Relationships: []
       }
+      carousel_images: {
+        Row: {
+          carousel: string
+          created_at: string | null
+          display_order: number
+          id: string
+          image_url: string
+        }
+        Insert: {
+          carousel: string
+          created_at?: string | null
+          display_order: number
+          id?: string
+          image_url: string
+        }
+        Update: {
+          carousel?: string
+          created_at?: string | null
+          display_order?: number
+          id?: string
+          image_url?: string
+        }
+        Relationships: []
+      }
+      prices: {
+        Row: {
+          active: boolean
+          id: number
+          price_a: number
+          price_b: number
+          price_c: number | null
+          updated_at: string | null
+        }
+        Insert: {
+          active?: boolean
+          id?: number
+          price_a?: number
+          price_b?: number
+          price_c?: number | null
+          updated_at?: string | null
+        }
+        Update: {
+          active?: boolean
+          id?: number
+          price_a?: number
+          price_b?: number
+          price_c?: number | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       pricing: {
         Row: {
           adhesion_fee: number
@@ -81,6 +132,27 @@ export type Database = {
           section?: string
           updated_at?: string | null
           url?: string
+        }
+        Relationships: []
+      }
+      videos: {
+        Row: {
+          id: number
+          title: string
+          updated_at: string | null
+          video_url: string
+        }
+        Insert: {
+          id: number
+          title: string
+          updated_at?: string | null
+          video_url: string
+        }
+        Update: {
+          id?: number
+          title?: string
+          updated_at?: string | null
+          video_url?: string
         }
         Relationships: []
       }

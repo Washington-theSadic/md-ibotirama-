@@ -2,56 +2,61 @@
 import React, { useState } from 'react';
 import { AdminLayout } from '@/components/admin/AdminLayout';
 import { AdminGuard } from '@/components/admin/AdminGuard';
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 import { ImageUploader } from '@/components/admin/ImageUploader';
-import { useAdmin } from '@/context/AdminContext';
-import { Trash2 } from 'lucide-react';
+import { useCarouselImages } from '@/hooks/useCarouselImages';
+import { Trash2, Loader2 } from 'lucide-react';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 
 const MarketingCampaigns = () => {
-  const { marketingCampaigns, updateMarketingCampaigns } = useAdmin();
+  const { images, loading, addImage, deleteImage, uploadImage } = useCarouselImages('campaign');
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
-  const [campaignToDelete, setCampaignToDelete] = useState<string | null>(null);
+  const [imageToDelete, setImageToDelete] = useState<string | null>(null);
   const { toast } = useToast();
   
-  const handleAddImage = (imageUrl: string) => {
-    const newCampaign = {
-      id: `campaign-${Date.now()}`,
-      imageUrl
-    };
+  const handleAddImage = async (imageUrl: string) => {
+    const success = await addImage(imageUrl);
     
-    updateMarketingCampaigns([...marketingCampaigns, newCampaign]);
-    setIsAddDialogOpen(false);
-    toast({
-      title: "Campanha adicionada",
-      description: "A nova campanha foi adicionada com sucesso"
-    });
+    if (success) {
+      setIsAddDialogOpen(false);
+    }
   };
   
   const confirmDelete = (id: string) => {
-    setCampaignToDelete(id);
+    setImageToDelete(id);
     setIsDeleteDialogOpen(true);
   };
   
-  const handleDelete = () => {
-    if (!campaignToDelete) return;
+  const handleDelete = async () => {
+    if (!imageToDelete) return;
     
-    const updatedCampaigns = marketingCampaigns.filter(
-      campaign => campaign.id !== campaignToDelete
-    );
+    const success = await deleteImage(imageToDelete);
     
-    updateMarketingCampaigns(updatedCampaigns);
-    setIsDeleteDialogOpen(false);
-    setCampaignToDelete(null);
-    
-    toast({
-      title: "Campanha excluída",
-      description: "A campanha foi excluída com sucesso"
-    });
+    if (success) {
+      setIsDeleteDialogOpen(false);
+      setImageToDelete(null);
+    }
   };
+
+  const handleFileUpload = async (file: File) => {
+    await uploadImage(file);
+    setIsAddDialogOpen(false);
+  };
+
+  if (loading) {
+    return (
+      <AdminGuard>
+        <AdminLayout active="marketing">
+          <div className="flex justify-center items-center h-64">
+            <Loader2 className="h-10 w-10 animate-spin text-gray-500" />
+          </div>
+        </AdminLayout>
+      </AdminGuard>
+    );
+  }
 
   return (
     <AdminGuard>
@@ -69,7 +74,7 @@ const MarketingCampaigns = () => {
           </Button>
         </div>
         
-        {marketingCampaigns.length === 0 ? (
+        {images.length === 0 ? (
           <Card>
             <CardContent className="flex flex-col items-center justify-center py-10">
               <p className="text-gray-500 mb-4">Nenhuma campanha cadastrada</p>
@@ -83,12 +88,12 @@ const MarketingCampaigns = () => {
           </Card>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {marketingCampaigns.map((campaign) => (
-              <Card key={campaign.id}>
+            {images.map((image) => (
+              <Card key={image.id}>
                 <CardHeader className="p-0">
                   <div className="relative aspect-video overflow-hidden rounded-t-lg">
                     <img 
-                      src={campaign.imageUrl} 
+                      src={image.image_url} 
                       alt="Campanha de Marketing" 
                       className="w-full h-full object-cover" 
                     />
@@ -98,7 +103,7 @@ const MarketingCampaigns = () => {
                   <Button 
                     variant="destructive"
                     size="sm"
-                    onClick={() => confirmDelete(campaign.id)}
+                    onClick={() => confirmDelete(image.id)}
                   >
                     <Trash2 size={16} className="mr-2" />
                     Excluir
@@ -119,7 +124,8 @@ const MarketingCampaigns = () => {
               </DialogDescription>
             </DialogHeader>
             <ImageUploader 
-              onImageSelected={handleAddImage} 
+              onImageSelected={handleAddImage}
+              onFileUpload={handleFileUpload}
               buttonText="Escolher Imagem"
             />
           </DialogContent>

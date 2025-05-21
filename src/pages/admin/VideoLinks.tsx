@@ -4,15 +4,15 @@ import { AdminLayout } from '@/components/admin/AdminLayout';
 import { AdminGuard } from '@/components/admin/AdminGuard';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { useToast } from "@/components/ui/use-toast";
-import { useAdmin } from '@/context/AdminContext';
-import { Edit, Trash2, Video } from 'lucide-react';
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
+import { useToast } from "@/components/ui/use-toast";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { Video, useVideos } from '@/hooks/useVideos';
+import { Loader2 } from 'lucide-react';
 
 const videoSchema = z.object({
   title: z.string().min(2, { message: "O título deve ter pelo menos 2 caracteres" }),
@@ -22,11 +22,9 @@ const videoSchema = z.object({
 type VideoFormValues = z.infer<typeof videoSchema>;
 
 const VideoLinks = () => {
-  const { videos, updateVideos } = useAdmin();
-  const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
+  const { videos, loading, updateVideo } = useVideos();
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
-  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
-  const [currentVideo, setCurrentVideo] = useState<string | null>(null);
+  const [currentVideo, setCurrentVideo] = useState<Video | null>(null);
   const { toast } = useToast();
   
   const form = useForm<VideoFormValues>({
@@ -37,214 +35,89 @@ const VideoLinks = () => {
     }
   });
   
-  const openAddDialog = () => {
-    form.reset({
-      title: "",
-      url: "",
-    });
-    setCurrentVideo(null);
-    setIsAddDialogOpen(true);
-  };
-  
-  const openEditDialog = (video: any) => {
+  const openEditDialog = (video: Video) => {
     form.reset({
       title: video.title,
-      url: video.url,
+      url: video.video_url,
     });
-    setCurrentVideo(video.id);
+    setCurrentVideo(video);
     setIsEditDialogOpen(true);
   };
   
-  const confirmDelete = (id: string) => {
-    setCurrentVideo(id);
-    setIsDeleteDialogOpen(true);
-  };
-  
-  const onSubmitAdd = (data: VideoFormValues) => {
-    const newVideo = {
-      id: `video-${Date.now()}`,
-      title: data.title,
-      url: data.url
-    };
-    
-    updateVideos([...videos, newVideo]);
-    setIsAddDialogOpen(false);
-    
-    toast({
-      title: "Vídeo adicionado",
-      description: "O novo vídeo foi adicionado com sucesso"
-    });
-  };
-  
-  const onSubmitEdit = (data: VideoFormValues) => {
+  const onSubmitEdit = async (data: VideoFormValues) => {
     if (!currentVideo) return;
     
-    const updatedVideos = videos.map(video => 
-      video.id === currentVideo 
-        ? { 
-            ...video,
-            title: data.title,
-            url: data.url 
-          }
-        : video
-    );
+    const success = await updateVideo(currentVideo.id, data.url, data.title);
     
-    updateVideos(updatedVideos);
-    setIsEditDialogOpen(false);
-    
-    toast({
-      title: "Vídeo atualizado",
-      description: "O vídeo foi atualizado com sucesso"
-    });
+    if (success) {
+      setIsEditDialogOpen(false);
+    }
   };
-  
-  const handleDelete = () => {
-    if (!currentVideo) return;
-    
-    const updatedVideos = videos.filter(
-      video => video.id !== currentVideo
+
+  if (loading) {
+    return (
+      <AdminGuard>
+        <AdminLayout active="videos">
+          <div className="flex justify-center items-center h-64">
+            <Loader2 className="h-10 w-10 animate-spin text-gray-500" />
+          </div>
+        </AdminLayout>
+      </AdminGuard>
     );
-    
-    updateVideos(updatedVideos);
-    setIsDeleteDialogOpen(false);
-    setCurrentVideo(null);
-    
-    toast({
-      title: "Vídeo excluído",
-      description: "O vídeo foi excluído com sucesso"
-    });
-  };
+  }
 
   return (
     <AdminGuard>
       <AdminLayout active="videos">
-        <div className="flex justify-between items-center mb-8">
-          <div>
-            <h1 className="text-3xl font-bold text-gray-800 mb-2">Links de Vídeos</h1>
-            <p className="text-gray-500">Gerencie os vídeos exibidos no site</p>
-          </div>
-          <Button 
-            onClick={openAddDialog}
-            className="bg-[#A21C1C] hover:bg-[#911616]"
-          >
-            Adicionar Vídeo
-          </Button>
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold text-gray-800 mb-2">Links de Vídeos</h1>
+          <p className="text-gray-500">
+            Gerencie os links dos vídeos que aparecem na página inicial.
+            Há exatamente dois slots de vídeo disponíveis.
+          </p>
         </div>
         
-        {videos.length === 0 ? (
-          <Card>
-            <CardContent className="flex flex-col items-center justify-center py-10">
-              <p className="text-gray-500 mb-4">Nenhum vídeo cadastrado</p>
-              <Button 
-                onClick={openAddDialog}
-                className="bg-[#A21C1C] hover:bg-[#911616]"
-              >
-                Adicionar Vídeo
-              </Button>
-            </CardContent>
-          </Card>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {videos.map((video) => (
-              <Card key={video.id}>
-                <CardHeader className="pb-2">
-                  <CardTitle className="text-lg flex items-center gap-2">
-                    <Video className="h-5 w-5 text-[#A21C1C]" />
-                    {video.title}
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="pb-2">
-                  <p className="text-sm text-gray-500 break-all">{video.url}</p>
-                </CardContent>
-                <CardFooter className="pt-2 flex justify-end space-x-2">
-                  <Button 
-                    variant="outline" 
-                    size="sm" 
-                    onClick={() => openEditDialog(video)}
-                  >
-                    <Edit size={16} className="mr-2" />
-                    Editar
-                  </Button>
-                  <Button 
-                    variant="destructive" 
-                    size="sm"
-                    onClick={() => confirmDelete(video.id)}
-                  >
-                    <Trash2 size={16} className="mr-2" />
-                    Excluir
-                  </Button>
-                </CardFooter>
-              </Card>
-            ))}
-          </div>
-        )}
-        
-        {/* Add Video Dialog */}
-        <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>Adicionar Novo Vídeo</DialogTitle>
-              <DialogDescription>
-                Adicione as informações do vídeo
-              </DialogDescription>
-            </DialogHeader>
-            <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmitAdd)} className="space-y-4">
-                <FormField
-                  control={form.control}
-                  name="title"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Título do Vídeo</FormLabel>
-                      <FormControl>
-                        <Input placeholder="Digite o título do vídeo..." {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                
-                <FormField
-                  control={form.control}
-                  name="url"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>URL do Vídeo</FormLabel>
-                      <FormControl>
-                        <Input placeholder="https://youtube.com/..." {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                
-                <DialogFooter>
-                  <Button 
-                    type="button" 
-                    variant="outline" 
-                    onClick={() => setIsAddDialogOpen(false)}
-                  >
-                    Cancelar
-                  </Button>
-                  <Button 
-                    type="submit" 
-                    className="bg-[#A21C1C] hover:bg-[#911616]"
-                  >
-                    Adicionar Vídeo
-                  </Button>
-                </DialogFooter>
-              </form>
-            </Form>
-          </DialogContent>
-        </Dialog>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {videos.map((video) => (
+            <Card key={video.id}>
+              <CardHeader className="pb-2">
+                <CardTitle className="text-lg">
+                  Vídeo {video.id}: {video.title}
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="aspect-video rounded-md bg-gray-100 overflow-hidden">
+                  <iframe 
+                    src={video.video_url} 
+                    className="w-full h-full" 
+                    frameBorder="0" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                    allowFullScreen
+                  />
+                </div>
+                <div>
+                  <p className="text-sm text-gray-500 break-all">{video.video_url}</p>
+                </div>
+              </CardContent>
+              <CardFooter>
+                <Button 
+                  className="w-full bg-[#A21C1C] hover:bg-[#911616]"
+                  onClick={() => openEditDialog(video)}
+                >
+                  Editar Vídeo
+                </Button>
+              </CardFooter>
+            </Card>
+          ))}
+        </div>
         
         {/* Edit Video Dialog */}
         <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
           <DialogContent>
             <DialogHeader>
-              <DialogTitle>Editar Vídeo</DialogTitle>
+              <DialogTitle>Editar Vídeo {currentVideo?.id}</DialogTitle>
               <DialogDescription>
-                Atualize as informações do vídeo
+                Atualize as informações do vídeo. Suportamos URLs de incorporação do YouTube.
               </DialogDescription>
             </DialogHeader>
             <Form {...form}>
@@ -270,7 +143,7 @@ const VideoLinks = () => {
                     <FormItem>
                       <FormLabel>URL do Vídeo</FormLabel>
                       <FormControl>
-                        <Input placeholder="https://youtube.com/..." {...field} />
+                        <Input placeholder="https://www.youtube.com/embed/..." {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -294,32 +167,6 @@ const VideoLinks = () => {
                 </DialogFooter>
               </form>
             </Form>
-          </DialogContent>
-        </Dialog>
-        
-        {/* Delete Confirmation Dialog */}
-        <Dialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>Confirmar Exclusão</DialogTitle>
-              <DialogDescription>
-                Tem certeza que deseja excluir este vídeo? Esta ação não pode ser desfeita.
-              </DialogDescription>
-            </DialogHeader>
-            <DialogFooter>
-              <Button 
-                variant="outline" 
-                onClick={() => setIsDeleteDialogOpen(false)}
-              >
-                Cancelar
-              </Button>
-              <Button 
-                variant="destructive" 
-                onClick={handleDelete}
-              >
-                Excluir
-              </Button>
-            </DialogFooter>
           </DialogContent>
         </Dialog>
       </AdminLayout>

@@ -2,56 +2,60 @@
 import React, { useState } from 'react';
 import { AdminLayout } from '@/components/admin/AdminLayout';
 import { AdminGuard } from '@/components/admin/AdminGuard';
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 import { ImageUploader } from '@/components/admin/ImageUploader';
-import { useAdmin } from '@/context/AdminContext';
-import { Trash2 } from 'lucide-react';
+import { useCarouselImages } from '@/hooks/useCarouselImages';
+import { Trash2, Loader2 } from 'lucide-react';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 
 const TeamImages = () => {
-  const { teamMembers, updateTeamMembers } = useAdmin();
+  const { images, loading, addImage, deleteImage, uploadImage } = useCarouselImages('team');
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
-  const [memberToDelete, setMemberToDelete] = useState<string | null>(null);
-  const { toast } = useToast();
-  
-  const handleAddImage = (imageUrl: string) => {
-    const newMember = {
-      id: `team-${Date.now()}`,
-      imageUrl
-    };
-    
-    updateTeamMembers([...teamMembers, newMember]);
-    setIsAddDialogOpen(false);
-    toast({
-      title: "Imagem adicionada",
-      description: "A nova imagem da equipe foi adicionada com sucesso"
-    });
-  };
+  const [imageToDelete, setImageToDelete] = useState<string | null>(null);
   
   const confirmDelete = (id: string) => {
-    setMemberToDelete(id);
+    setImageToDelete(id);
     setIsDeleteDialogOpen(true);
   };
   
-  const handleDelete = () => {
-    if (!memberToDelete) return;
+  const handleDelete = async () => {
+    if (!imageToDelete) return;
     
-    const updatedMembers = teamMembers.filter(
-      member => member.id !== memberToDelete
-    );
+    const success = await deleteImage(imageToDelete);
     
-    updateTeamMembers(updatedMembers);
-    setIsDeleteDialogOpen(false);
-    setMemberToDelete(null);
-    
-    toast({
-      title: "Imagem excluída",
-      description: "A imagem da equipe foi excluída com sucesso"
-    });
+    if (success) {
+      setIsDeleteDialogOpen(false);
+      setImageToDelete(null);
+    }
   };
+
+  const handleAddImage = async (imageUrl: string) => {
+    const success = await addImage(imageUrl);
+    
+    if (success) {
+      setIsAddDialogOpen(false);
+    }
+  };
+
+  const handleFileUpload = async (file: File) => {
+    await uploadImage(file);
+    setIsAddDialogOpen(false);
+  };
+
+  if (loading) {
+    return (
+      <AdminGuard>
+        <AdminLayout active="team">
+          <div className="flex justify-center items-center h-64">
+            <Loader2 className="h-10 w-10 animate-spin text-gray-500" />
+          </div>
+        </AdminLayout>
+      </AdminGuard>
+    );
+  }
 
   return (
     <AdminGuard>
@@ -69,7 +73,7 @@ const TeamImages = () => {
           </Button>
         </div>
         
-        {teamMembers.length === 0 ? (
+        {images.length === 0 ? (
           <Card>
             <CardContent className="flex flex-col items-center justify-center py-10">
               <p className="text-gray-500 mb-4">Nenhuma imagem da equipe cadastrada</p>
@@ -83,12 +87,12 @@ const TeamImages = () => {
           </Card>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {teamMembers.map((member) => (
-              <Card key={member.id}>
+            {images.map((image) => (
+              <Card key={image.id}>
                 <CardHeader className="p-0">
                   <div className="relative aspect-video overflow-hidden rounded-t-lg">
                     <img 
-                      src={member.imageUrl} 
+                      src={image.image_url} 
                       alt="Imagem da Equipe" 
                       className="w-full h-full object-cover" 
                     />
@@ -98,7 +102,7 @@ const TeamImages = () => {
                   <Button 
                     variant="destructive"
                     size="sm"
-                    onClick={() => confirmDelete(member.id)}
+                    onClick={() => confirmDelete(image.id)}
                   >
                     <Trash2 size={16} className="mr-2" />
                     Excluir
@@ -119,7 +123,8 @@ const TeamImages = () => {
               </DialogDescription>
             </DialogHeader>
             <ImageUploader 
-              onImageSelected={handleAddImage} 
+              onImageSelected={handleAddImage}
+              onFileUpload={handleFileUpload}
               buttonText="Escolher Imagem"
             />
           </DialogContent>

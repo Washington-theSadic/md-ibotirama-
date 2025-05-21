@@ -13,6 +13,7 @@ import { MarketingCampaigns } from '@/components/landing/MarketingCampaigns';
 import { CallToAction } from '@/components/landing/CallToAction';
 import { Footer } from '@/components/landing/Footer';
 import { Pricing } from '@/components/landing/Pricing';
+import { VideoSection } from '@/components/landing/VideoSection';
 
 const Index = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -58,12 +59,11 @@ const Index = () => {
       <HowItWorks />
       <Advantages />
       <DeliveryOptions />
+      <VideoSection />
       <TeamSection />
       <Testimonials />
       <MarketingCampaigns />
-      
       <Pricing />
-      
       <CallToAction />
       <Footer />
     </main>
