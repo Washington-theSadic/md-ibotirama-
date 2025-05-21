@@ -54,6 +54,27 @@ export type Database = {
         }
         Relationships: []
       }
+      pin_logins: {
+        Row: {
+          created_at: string | null
+          id: string
+          pin: string
+          username: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          pin: string
+          username: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          pin?: string
+          username?: string
+        }
+        Relationships: []
+      }
       prices: {
         Row: {
           active: boolean
@@ -161,7 +182,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      check_pin_login: {
+        Args: { p_username: string; p_pin: string }
+        Returns: boolean
+      }
     }
     Enums: {
       [_ in never]: never
