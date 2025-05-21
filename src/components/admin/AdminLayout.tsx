@@ -2,11 +2,11 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { LogOut, Image, Users, MessageSquare, Video, Settings, UserPlus, Home } from 'lucide-react';
+import { LogOut, Image, Users, MessageSquare, Video } from 'lucide-react';
 
 interface AdminLayoutProps {
   children: React.ReactNode;
-  active: 'dashboard' | 'marketing' | 'team' | 'testimonials' | 'videos' | 'settings' | 'users';
+  active: 'dashboard' | 'marketing' | 'team' | 'testimonials' | 'videos';
 }
 
 export const AdminLayout: React.FC<AdminLayoutProps> = ({ children, active }) => {
@@ -26,18 +26,12 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({ children, active }) =>
     navigate('/admin');
   };
   
-  const handleGoToSite = () => {
-    navigate('/');
-  };
-  
   const menuItems = [
     { id: 'dashboard', label: 'Dashboard', icon: <Image size={18} />, path: '/admin/dashboard' },
     { id: 'marketing', label: 'Campanhas', icon: <Image size={18} />, path: '/admin/marketing' },
     { id: 'team', label: 'Equipe', icon: <Users size={18} />, path: '/admin/team' },
     { id: 'testimonials', label: 'Depoimentos', icon: <MessageSquare size={18} />, path: '/admin/testimonials' },
-    { id: 'videos', label: 'Vídeos', icon: <Video size={18} />, path: '/admin/videos' },
-    { id: 'settings', label: 'Configurações', icon: <Settings size={18} />, path: '/admin/settings' },
-    { id: 'users', label: 'Usuários', icon: <UserPlus size={18} />, path: '/admin/users' },
+    { id: 'videos', label: 'Vídeos', icon: <Video size={18} />, path: '/admin/videos' }
   ];
   
   return (
@@ -53,26 +47,15 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({ children, active }) =>
         </div>
         <div className="flex items-center gap-4">
           <span className="text-sm hidden md:block text-gray-300">{adminEmail}</span>
-          <div className="flex gap-2">
-            <Button 
-              variant="outline" 
-              size="sm" 
-              className="text-white border-white hover:bg-white hover:text-[#1F2937]"
-              onClick={handleGoToSite}
-            >
-              <Home size={16} className="mr-2" />
-              Site
-            </Button>
-            <Button 
-              variant="outline" 
-              size="sm" 
-              className="text-white border-white hover:bg-white hover:text-[#1F2937]"
-              onClick={handleLogout}
-            >
-              <LogOut size={16} className="mr-2" />
-              Sair
-            </Button>
-          </div>
+          <Button 
+            variant="outline" 
+            size="sm" 
+            className="text-white border-white hover:bg-white hover:text-[#1F2937]"
+            onClick={handleLogout}
+          >
+            <LogOut size={16} className="mr-2" />
+            Sair
+          </Button>
         </div>
       </header>
       
