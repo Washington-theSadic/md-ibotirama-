@@ -13,6 +13,7 @@ import AdminDashboard from "./pages/admin/AdminDashboard";
 import MarketingCampaigns from "./pages/admin/MarketingCampaigns";
 import TeamImages from "./pages/admin/TeamImages";
 import Testimonials from "./pages/admin/Testimonials";
+import ThankYou from "./pages/ThankYou";
 
 // Create the QueryClient outside of the component
 const queryClient = new QueryClient();
@@ -27,6 +28,7 @@ function App() {
           <BrowserRouter>
             <Routes>
               <Route path="/" element={<Index />} />
+              <Route path="/obrigado" element={<ThankYou />} />
               <Route path="/admin" element={<AdminLogin />} />
               <Route path="/admin/dashboard" element={<AdminDashboard />} />
               <Route path="/admin/marketing" element={<MarketingCampaigns />} />

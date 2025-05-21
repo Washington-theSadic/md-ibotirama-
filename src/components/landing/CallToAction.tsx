@@ -1,9 +1,6 @@
 
 import React, { useEffect, useState } from 'react';
 import { Button } from "@/components/ui/button";
-import { MessageSquare } from 'lucide-react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { ContactForm } from './ContactForm';
 
 export const CallToAction = () => {
   const [isPulsing, setIsPulsing] = useState(false);
@@ -54,22 +51,6 @@ export const CallToAction = () => {
         >
           Quero ser parceiro
         </Button>
-
-        <div className="fixed bottom-4 right-4 z-50">
-          <Dialog>
-            <DialogTrigger asChild>
-              <Button size="icon" aria-label="Contato via WhatsApp" className="h-14 w-14 rounded-full bg-[#A21C1C] hover:bg-[#911616] shadow-lg hover:shadow-xl transition-all duration-600 animate-bounce">
-                <MessageSquare className="h-6 w-6" />
-              </Button>
-            </DialogTrigger>
-            <DialogContent className="sm:max-w-[500px]">
-              <DialogHeader>
-                <DialogTitle className="text-xl text-[#A21C1C]">Entre em contato</DialogTitle>
-              </DialogHeader>
-              <ContactForm />
-            </DialogContent>
-          </Dialog>
-        </div>
       </div>
     </section>;
 };

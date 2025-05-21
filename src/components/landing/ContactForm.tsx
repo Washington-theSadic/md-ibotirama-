@@ -1,5 +1,6 @@
 
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -28,6 +29,7 @@ const formSchema = z.object({
 type FormValues = z.infer<typeof formSchema>;
 
 export const ContactForm = () => {
+  const navigate = useNavigate();
   const { toast } = useToast();
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -52,6 +54,9 @@ export const ContactForm = () => {
     
     // Reset form after submission
     form.reset();
+    
+    // Redirect to thank you page
+    navigate('/obrigado');
   }
 
   return (
