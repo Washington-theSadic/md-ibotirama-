@@ -63,7 +63,7 @@ const MarketingCampaigns = () => {
           </div>
           <Button 
             onClick={() => setIsAddDialogOpen(true)}
-            className="bg-[#A21C1C] hover:bg-[#911616]"
+            className="bg-[#A21C1C] hover:bg-[#911616] text-white"
           >
             Adicionar Imagem
           </Button>
@@ -75,7 +75,7 @@ const MarketingCampaigns = () => {
               <p className="text-gray-500 mb-4">Nenhuma campanha cadastrada</p>
               <Button 
                 onClick={() => setIsAddDialogOpen(true)}
-                className="bg-[#A21C1C] hover:bg-[#911616]"
+                className="bg-[#A21C1C] hover:bg-[#911616] text-white"
               >
                 Adicionar Imagem
               </Button>

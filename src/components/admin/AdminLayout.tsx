@@ -2,17 +2,18 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { LogOut, Image, Users, MessageSquare, Video, ArrowLeft } from 'lucide-react';
+import { LogOut, Image, Users, MessageSquare, Video, ArrowLeft, Home } from 'lucide-react';
 
 interface AdminLayoutProps {
   children: React.ReactNode;
   active: 'dashboard' | 'marketing' | 'team' | 'testimonials' | 'videos';
+  setUnsavedChanges?: (value: boolean) => void;
 }
 
-export const AdminLayout: React.FC<AdminLayoutProps> = ({ children, active }) => {
+export const AdminLayout: React.FC<AdminLayoutProps> = ({ children, active, setUnsavedChanges }) => {
   const navigate = useNavigate();
   const [adminEmail, setAdminEmail] = useState<string>('');
-  const [hasUnsavedChanges, setHasUnsavedChanges] = useState<boolean>(false);
+  const [hasUnsavedChanges, setHasUnsavedChangesState] = useState<boolean>(false);
   
   useEffect(() => {
     const email = localStorage.getItem('admin-email');
@@ -49,13 +50,16 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({ children, active }) =>
     }
   };
   
-  // This function will be used by child components to notify about unsaved changes
-  const setUnsavedChanges = (value: boolean) => {
-    setHasUnsavedChanges(value);
+  // Update unsaved changes state and call parent's setUnsavedChanges if available
+  const updateUnsavedChanges = (value: boolean) => {
+    setHasUnsavedChangesState(value);
+    if (setUnsavedChanges) {
+      setUnsavedChanges(value);
+    }
   };
   
   const menuItems = [
-    { id: 'dashboard', label: 'Dashboard', icon: <Image size={18} />, path: '/admin/dashboard' },
+    { id: 'dashboard', label: 'Dashboard', icon: <Home size={18} />, path: '/admin/dashboard' },
     { id: 'marketing', label: 'Campanhas', icon: <Image size={18} />, path: '/admin/marketing' },
     { id: 'team', label: 'Equipe', icon: <Users size={18} />, path: '/admin/team' },
     { id: 'testimonials', label: 'Depoimentos', icon: <MessageSquare size={18} />, path: '/admin/testimonials' },
@@ -65,13 +69,11 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({ children, active }) =>
     <div className="min-h-screen bg-gray-100 flex flex-col">
       <header className="bg-[#1F2937] text-white px-6 py-4 flex justify-between items-center shadow-md">
         <div className="flex items-center space-x-4">
-          <Link to="/">
-            <img 
-              src="/lovable-uploads/476b844f-a75b-468e-ba6a-1e7345b83181.png" 
-              alt="Mais Delivery Logo" 
-              className="h-8"
-            />
-          </Link>
+          <img 
+            src="/lovable-uploads/476b844f-a75b-468e-ba6a-1e7345b83181.png" 
+            alt="Mais Delivery Logo" 
+            className="h-8"
+          />
           <h1 className="text-xl font-bold hidden sm:block">Painel Administrativo</h1>
         </div>
         <div className="flex items-center gap-4">
@@ -127,10 +129,10 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({ children, active }) =>
         </aside>
         
         <main className="flex-1 p-6">
-          {/* Pass the setUnsavedChanges function to children via React clone */}
+          {/* Pass the updateUnsavedChanges function to children via React clone */}
           {React.Children.map(children, child => {
             if (React.isValidElement(child)) {
-              return React.cloneElement(child, { setUnsavedChanges } as any);
+              return React.cloneElement(child, { setUnsavedChanges: updateUnsavedChanges } as any);
             }
             return child;
           })}
@@ -139,4 +141,3 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({ children, active }) =>
     </div>
   );
 };
-
