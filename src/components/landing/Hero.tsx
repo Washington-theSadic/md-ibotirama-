@@ -4,12 +4,19 @@ import { Button } from "@/components/ui/button";
 import { Play } from 'lucide-react';
 
 export const Hero = () => {
+  // Fixed ClickUp form URL
+  const clickUpFormUrl = 'https://forms.clickup.com/9007116077/f/8cdvbtd-1933/04EZ2JLNT1SGLXPAF2?Nome%20da%20tarefa=Estabelecimento%20Interessado';
+
   useEffect(() => {
     const heroSection = document.querySelector('#hero');
     if (heroSection) {
       heroSection.classList.add('animate-fade-in');
     }
   }, []);
+  
+  const handlePartnerClick = () => {
+    window.open(clickUpFormUrl, '_blank');
+  };
   
   return (
     <section 
@@ -33,11 +40,11 @@ export const Hero = () => {
         
         <div className="flex flex-col md:flex-row items-center justify-center gap-4 mb-12 transform translate-y-0 opacity-100 transition-all duration-700 delay-700">
           <Button 
-            asChild 
             size="lg" 
             className="w-full md:w-auto bg-[#F59F00] hover:bg-[#E08E00] text-white border-2 border-white"
+            onClick={handlePartnerClick}
           >
-            <a href="#cta">Quero ser parceiro</a>
+            Quero ser parceiro
           </Button>
           
           <Button 

@@ -15,9 +15,16 @@ export const Header: React.FC<HeaderProps> = ({
 }) => {
   const [menuOpen, setMenuOpen] = useState(false);
   const isMobile = useMedia('(max-width: 768px)');
+  // Fixed ClickUp form URL
+  const clickUpFormUrl = 'https://forms.clickup.com/9007116077/f/8cdvbtd-1933/04EZ2JLNT1SGLXPAF2?Nome%20da%20tarefa=Estabelecimento%20Interessado';
   
   const closeMenu = () => {
     setMenuOpen(false);
+  };
+  
+  const handlePartnerClick = () => {
+    window.open(clickUpFormUrl, '_blank');
+    closeMenu();
   };
 
   return (
@@ -33,8 +40,8 @@ export const Header: React.FC<HeaderProps> = ({
             <a href="#beneficios" className="text-[#A21C1C] font-medium hover:text-opacity-80 transition-colors">Benefícios</a>
             <a href="#como-funciona" className="text-[#A21C1C] font-medium hover:text-opacity-80 transition-colors">Como Funciona</a>
             <a href="#depoimentos" className="text-[#A21C1C] font-medium hover:text-opacity-80 transition-colors">Depoimentos</a>
-            <Button asChild className="bg-[#A21C1C] hover:bg-[#911616] px-6">
-              <a href="#cta">Seja Parceiro</a>
+            <Button className="bg-[#A21C1C] hover:bg-[#911616] px-6" onClick={handlePartnerClick}>
+              Seja Parceiro
             </Button>
           </nav>
 
@@ -65,10 +72,8 @@ export const Header: React.FC<HeaderProps> = ({
             <a href="#depoimentos" className="py-3 text-[#A21C1C] font-medium border-b border-gray-100" onClick={closeMenu}>
               Depoimentos
             </a>
-            <Button asChild className="mt-4 bg-[#A21C1C] hover:bg-[#911616]">
-              <a href="#cta" onClick={closeMenu}>
-                Seja Parceiro
-              </a>
+            <Button className="mt-4 bg-[#A21C1C] hover:bg-[#911616]" onClick={handlePartnerClick}>
+              Seja Parceiro
             </Button>
           </nav>
         </div>
