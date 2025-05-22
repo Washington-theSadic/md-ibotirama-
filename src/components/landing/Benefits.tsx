@@ -11,16 +11,16 @@ export const Benefits = () => {
   });
   const features = [{
     title: "Publicidade e Marketing",
-    description: "Acesso a campanhas e promoções dentro da plataforma, além de ações de marketing cooperado onde dividimos os custos para maximizar o alcance. Trabalhamos juntos para que sua marca ganhe mais visibilidade."
+    description: "Participe de campanhas na plataforma e ganhe destaque com ações que aumentam a visibilidade da sua marca."
   }, {
     title: "Garantimos transparência financeira",
-    description: "Tenha acesso a relatórios detalhados sobre o seu negócio."
+    description: "Acompanhe relatórios completos e atualizados para entender a performance e o faturamento do seu negócio."
   }, {
     title: "Nada de robôs! Suporte local e humanizado",
-    description: "Temos um consultor especializado para sua empresa."
+    description: "Receba atendimento real com um consultor exclusivo, pronto para orientar sua empresa em cada etapa."
   }, {
     title: "Autonomia para criar promoções exclusivas",
-    description: "Crie campanhas e promoções para impulsionar suas vendas."
+    description: "Crie ofertas personalizadas dentro da plataforma e impulsione suas vendas com campanhas sob seu controle."
   }];
   return <section id="beneficios" className="py-8 md:py-16 px-4 bg-gray-50">
       <div className="container mx-auto">
