@@ -30,7 +30,7 @@ export const TeamSection = () => {
             </h2>
             
             <p className="text-[#1F2937] text-lg mb-6">
-              Por trás da nossa tecnologia existe uma equipe completa de profissionais dedicados a garantir o sucesso do seu negócio. Nossa central de monitoramento funciona das 7:30 às 23:30, todos os dias, garantindo que cada pedido seja entregue com excelência.
+              Por trás da nossa tecnologia existe uma equipe completa de profissionais dedicados a garantir o sucesso do seu negócio. Nossa central de monitoramento funciona das 7:30 às 00:00, todos os dias, garantindo que cada pedido seja entregue com excelência.
             </p>
           </div>
           
